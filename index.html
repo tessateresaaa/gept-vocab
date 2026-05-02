@@ -563,13 +563,22 @@ const SENT_MAP={
 
 let S={tab:'plan',currentIdx:0,completed:{},quizState:null};
 
-// ── Redundant storage: localStorage + sessionStorage + URL-hash backup ──
-const STORE_KEY='gept_progress_v3';
+// ══════════════════════════════════════════════════════════════
+//  STORAGE STRATEGY
+//  1. localStorage (primary)
+//  2. sessionStorage (backup, survives tab refresh)
+//  3. URL hash bookmark — encode all progress into URL so students
+//     can bookmark their personal link; progress travels with the URL
+//  Opening the site with no hash → tries localStorage/sessionStorage
+//  Opening with #p=... hash    → restores from hash (always wins)
+// ══════════════════════════════════════════════════════════════
+const STORE_KEY='gept_v4';
 
-function save(){
-  const raw=JSON.stringify(S.completed);
-  try{localStorage.setItem(STORE_KEY,raw);}catch(e){}
-  try{sessionStorage.setItem(STORE_KEY,raw);}catch(e){}
+function encode(obj){
+  try{return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));}catch(e){return '';}
+}
+function decode(str){
+  try{return JSON.parse(decodeURIComponent(escape(atob(str))));}catch(e){return null;}
 }
 
 function mergeCompleted(a,b){
@@ -581,38 +590,83 @@ function mergeCompleted(a,b){
   return out;
 }
 
+function save(){
+  const raw=JSON.stringify(S.completed);
+  try{localStorage.setItem(STORE_KEY,raw);}catch(e){}
+  try{sessionStorage.setItem(STORE_KEY,raw);}catch(e){}
+  // silently update URL hash so current tab URL always has latest progress
+  // (does NOT trigger page reload)
+  try{
+    if(Object.keys(S.completed).length>0){
+      const enc=encode(S.completed);
+      history.replaceState(null,'',location.pathname+'#p='+enc);
+    }
+  }catch(e){}
+}
+
 function load(){
+  // Priority 1: URL hash (student opened their personal bookmark link)
+  try{
+    const h=location.hash;
+    if(h.startsWith('#p=')){
+      const data=decode(h.slice(3));
+      if(data&&typeof data==='object'){
+        S.completed=data;
+        // write to local stores too
+        const raw=JSON.stringify(data);
+        try{localStorage.setItem(STORE_KEY,raw);}catch(e){}
+        try{sessionStorage.setItem(STORE_KEY,raw);}catch(e){}
+        return;
+      }
+    }
+  }catch(e){}
+  // Priority 2: localStorage + sessionStorage merged
   let dA={},dB={};
   try{const d=localStorage.getItem(STORE_KEY);if(d)dA=JSON.parse(d);}catch(e){}
   try{const d=sessionStorage.getItem(STORE_KEY);if(d)dB=JSON.parse(d);}catch(e){}
-  // also check legacy key so old records aren't lost
-  try{const d=localStorage.getItem('gept_s2');if(d){const old=JSON.parse(d);dA=mergeCompleted(dA,old);}}catch(e){}
+  // also migrate legacy keys
+  try{const d=localStorage.getItem('gept_progress_v3')||localStorage.getItem('gept_s2');if(d){const old=JSON.parse(d);dA=mergeCompleted(dA,old);}}catch(e){}
   S.completed=mergeCompleted(dA,dB);
   if(Object.keys(S.completed).length>0)save();
 }
 
-function exportBackup(){
-  try{
-    const raw=btoa(unescape(encodeURIComponent(JSON.stringify(S.completed))));
-    const url=location.href.split('#')[0]+'#bak='+raw;
-    prompt('複製以下備份連結（貼到瀏覽器網址列可還原進度）：',url);
-  }catch(e){alert('匯出失敗：'+e);}
+function getBookmarkURL(){
+  const enc=encode(S.completed);
+  return location.href.split('#')[0]+'#p='+enc;
 }
 
-function importFromHash(){
-  try{
-    if(!location.hash.startsWith('#bak='))return;
-    const raw=decodeURIComponent(escape(atob(location.hash.slice(5))));
-    const imported=JSON.parse(raw);
-    S.completed=mergeCompleted(S.completed,imported);
-    save();
-    history.replaceState(null,'',location.pathname+location.search);
-    alert('進度還原成功！共 '+Object.keys(S.completed).length+' 筆紀錄。');
-  }catch(e){}
+function showBookmark(){
+  const url=getBookmarkURL();
+  // build a nice modal overlay instead of browser prompt
+  const existing=document.getElementById('bm-modal');
+  if(existing)existing.remove();
+  const modal=document.createElement('div');
+  modal.id='bm-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:9999';
+  modal.innerHTML=`<div style="background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;max-width:520px;width:90%;border:0.5px solid var(--color-border-tertiary)">
+    <div style="font-size:15px;font-weight:500;margin-bottom:8px">📌 你的個人進度書籤連結</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6">複製以下連結，加入瀏覽器書籤或存到備忘錄。<br>下次從這個連結進入，所有進度都會自動還原。</div>
+    <textarea id="bm-url" readonly style="width:100%;height:72px;font-size:11px;padding:8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);resize:none;font-family:monospace">${url}</textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
+      <button onclick="document.getElementById('bm-modal').remove()" style="padding:7px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;font-size:13px;color:var(--color-text-primary)">關閉</button>
+      <button onclick="navigator.clipboard.writeText(document.getElementById('bm-url').value).then(()=>{this.textContent='已複製 ✓';this.style.background='#639922';})" style="padding:7px 16px;border:0.5px solid #378ADD;border-radius:var(--border-radius-md);background:#378ADD;cursor:pointer;font-size:13px;color:#fff;font-weight:500">複製連結</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
 }
 
 load();
-importFromHash();
+
+// First-visit hint: show bookmark reminder after first quiz completion
+// (injected once via renderPlan banner)
+function firstVisitBanner(){
+  if(Object.keys(S.completed).length>0)return'';
+  return `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#E6F1FB;border-radius:var(--border-radius-md);border:0.5px solid #85B7EB;margin-bottom:1rem">
+    <div style="font-size:18px">💡</div>
+    <div style="flex:1;font-size:12px;color:#0C447C;line-height:1.6">完成第一天練習後，請到「學習紀錄」點<strong>「取得我的進度連結」</strong>，書籤該連結就能永久保留進度。</div>
+  </div>`;
+}
 
 function render(){
   const r=document.getElementById('root');
@@ -653,7 +707,7 @@ function renderPlan(){
       monthBlocks[m]+=`<div class="${cls}" onclick="goLearn(${idx})"><div>大考${item.month}</div><div style="font-size:10px;color:inherit">450字</div></div>`;
     }
   });
-  let html=`<div class="stat-grid">
+  let html=firstVisitBanner()+`<div class="stat-grid">
     <div class="stat-card"><div class="stat-n">${done}</div><div class="stat-l">已完成項目</div></div>
     <div class="stat-card"><div class="stat-n">${done*15}</div><div class="stat-l">累積單字數</div></div>
     <div class="stat-card"><div class="stat-n">${pct}%</div><div class="stat-l">整體進度</div></div>
@@ -846,8 +900,11 @@ function renderHistory(){
   const entries=Object.entries(S.completed).sort((a,b)=>Number(b[0])-Number(a[0]));
   // Backup / restore bar — always visible
   const backupBar=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)">
-    <span style="font-size:12px;color:var(--color-text-secondary);flex:1">📦 進度備份 — 防止瀏覽器清除資料</span>
-    <button class="btn btn-sm" onclick="exportBackup()">匯出備份連結</button>
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">📌 儲存個人進度書籤</div>
+      <div style="font-size:11px;color:var(--color-text-secondary)">點下方按鈕取得你的專屬連結，書籤後永久保留進度</div>
+    </div>
+    <button class="btn btn-sm btn-blue" onclick="showBookmark()">取得我的進度連結</button>
   </div>`;
   if(!entries.length)return backupBar+`<div style="color:var(--color-text-secondary);font-size:14px;padding:0.5rem 0">尚無學習紀錄，完成練習後會自動記錄在這裡。</div>`;
   const totalScore=entries.reduce((s,[,v])=>s+v.score,0);
