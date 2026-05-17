@@ -561,118 +561,151 @@ const SENT_MAP={
   "universe":"The ___ contains billions of galaxies beyond our own.",
 };
 
-let S={tab:'plan',currentIdx:0,completed:{},quizState:null};
+let S={tab:'plan',currentIdx:0,completed:{},quizState:null,studentName:''};
 
 // ══════════════════════════════════════════════════════════════
-//  STORAGE STRATEGY
-//  1. localStorage (primary)
-//  2. sessionStorage (backup, survives tab refresh)
-//  3. URL hash bookmark — encode all progress into URL so students
-//     can bookmark their personal link; progress travels with the URL
-//  Opening the site with no hash → tries localStorage/sessionStorage
-//  Opening with #p=... hash    → restores from hash (always wins)
+//  STORAGE: Name-based login + localStorage + URL hash (3 layers)
+//  Student enters name once → stored in localStorage
+//  Every save writes to: localStorage[name] + URL hash
+//  On open: checks URL hash first, then localStorage by name
+//  Result: progress survives browser clears, device changes,
+//  as long as student uses same name OR their saved URL link
 // ══════════════════════════════════════════════════════════════
-const STORE_KEY='gept_v4';
 
-function encode(obj){
-  try{return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));}catch(e){return '';}
-}
-function decode(str){
-  try{return JSON.parse(decodeURIComponent(escape(atob(str))));}catch(e){return null;}
-}
-
-function mergeCompleted(a,b){
-  const out=Object.assign({},a);
-  for(const k in b){
-    if(!out[k])out[k]=b[k];
-    else if((b[k].score||0)>(out[k].score||0))out[k]=b[k];
-  }
-  return out;
-}
+function enc(obj){try{return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));}catch(e){return '';}}
+function dec(s){try{return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
+function nameKey(n){return 'gept6_'+(n||'').trim().toLowerCase().replace(/\s+/g,'_');}
 
 function save(){
-  const raw=JSON.stringify(S.completed);
-  try{localStorage.setItem(STORE_KEY,raw);}catch(e){}
-  try{sessionStorage.setItem(STORE_KEY,raw);}catch(e){}
-  // silently update URL hash so current tab URL always has latest progress
-  // (does NOT trigger page reload)
-  try{
-    if(Object.keys(S.completed).length>0){
-      const enc=encode(S.completed);
-      history.replaceState(null,'',location.pathname+'#p='+enc);
-    }
-  }catch(e){}
+  if(!S.studentName)return;
+  const data={completed:S.completed,name:S.studentName,ts:Date.now()};
+  try{localStorage.setItem(nameKey(S.studentName),JSON.stringify(data));}catch(e){}
+  try{sessionStorage.setItem(nameKey(S.studentName),JSON.stringify(data));}catch(e){}
+  try{history.replaceState(null,'',location.pathname+'#u='+encodeURIComponent(S.studentName)+'&d='+enc(S.completed));}catch(e){}
 }
 
-function load(){
-  // Priority 1: URL hash (student opened their personal bookmark link)
+function loadFromHash(){
   try{
     const h=location.hash;
-    if(h.startsWith('#p=')){
-      const data=decode(h.slice(3));
-      if(data&&typeof data==='object'){
-        S.completed=data;
-        // write to local stores too
-        const raw=JSON.stringify(data);
-        try{localStorage.setItem(STORE_KEY,raw);}catch(e){}
-        try{sessionStorage.setItem(STORE_KEY,raw);}catch(e){}
-        return;
-      }
-    }
-  }catch(e){}
-  // Priority 2: localStorage + sessionStorage merged
-  let dA={},dB={};
-  try{const d=localStorage.getItem(STORE_KEY);if(d)dA=JSON.parse(d);}catch(e){}
-  try{const d=sessionStorage.getItem(STORE_KEY);if(d)dB=JSON.parse(d);}catch(e){}
-  // also migrate legacy keys
-  try{const d=localStorage.getItem('gept_progress_v3')||localStorage.getItem('gept_s2');if(d){const old=JSON.parse(d);dA=mergeCompleted(dA,old);}}catch(e){}
-  S.completed=mergeCompleted(dA,dB);
-  if(Object.keys(S.completed).length>0)save();
+    if(!h.startsWith('#u='))return false;
+    const parts=h.slice(1).split('&');
+    const uPart=parts.find(p=>p.startsWith('u='));
+    const dPart=parts.find(p=>p.startsWith('d='));
+    if(!uPart||!dPart)return false;
+    const name=decodeURIComponent(uPart.slice(2));
+    const data=dec(dPart.slice(2));
+    if(!data||!name)return false;
+    S.studentName=name;
+    S.completed=data||{};
+    // write back to localStorage
+    try{localStorage.setItem(nameKey(name),JSON.stringify({completed:S.completed,name,ts:Date.now()}));}catch(e){}
+    return true;
+  }catch(e){return false;}
 }
 
-function getBookmarkURL(){
-  const enc=encode(S.completed);
-  return location.href.split('#')[0]+'#p='+enc;
+function loadFromStorage(name){
+  try{
+    const k=nameKey(name);
+    const d=localStorage.getItem(k)||sessionStorage.getItem(k);
+    if(!d)return false;
+    const parsed=JSON.parse(d);
+    S.completed=parsed.completed||{};
+    S.studentName=name;
+    return true;
+  }catch(e){return false;}
 }
 
-function showBookmark(){
-  const url=getBookmarkURL();
-  // build a nice modal overlay instead of browser prompt
-  const existing=document.getElementById('bm-modal');
+function getSavedName(){
+  try{return localStorage.getItem('gept6_last_name')||'';}catch(e){return '';}
+}
+function saveLastName(n){try{localStorage.setItem('gept6_last_name',n);}catch(e){}}
+
+function firstVisitBanner(){return'';}
+
+function showNameLogin(onSuccess){
+  const existing=document.getElementById('login-modal');
   if(existing)existing.remove();
+  const savedName=getSavedName();
   const modal=document.createElement('div');
-  modal.id='bm-modal';
-  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;z-index:9999';
-  modal.innerHTML=`<div style="background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;max-width:520px;width:90%;border:0.5px solid var(--color-border-tertiary)">
-    <div style="font-size:15px;font-weight:500;margin-bottom:8px">📌 你的個人進度書籤連結</div>
-    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:12px;line-height:1.6">複製以下連結，加入瀏覽器書籤或存到備忘錄。<br>下次從這個連結進入，所有進度都會自動還原。</div>
-    <textarea id="bm-url" readonly style="width:100%;height:72px;font-size:11px;padding:8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);color:var(--color-text-primary);resize:none;font-family:monospace">${url}</textarea>
-    <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-      <button onclick="document.getElementById('bm-modal').remove()" style="padding:7px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;font-size:13px;color:var(--color-text-primary)">關閉</button>
-      <button onclick="navigator.clipboard.writeText(document.getElementById('bm-url').value).then(()=>{this.textContent='已複製 ✓';this.style.background='#639922';})" style="padding:7px 16px;border:0.5px solid #378ADD;border-radius:var(--border-radius-md);background:#378ADD;cursor:pointer;font-size:13px;color:#fff;font-weight:500">複製連結</button>
-    </div>
-  </div>`;
+  modal.id='login-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem';
+  modal.innerHTML=`
+    <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.25);text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📚</div>
+      <div style="font-size:18px;font-weight:700;color:#1a1a18;margin-bottom:6px">全民英檢初級單字練習</div>
+      <div style="font-size:13px;color:#6b6b68;margin-bottom:20px;line-height:1.6">輸入你的名字，系統會自動記住你的學習進度<br>每次進來輸入同一個名字就能繼續</div>
+      <input id="name-input" type="text" placeholder="請輸入你的名字或暱稱"
+        value="${savedName}"
+        style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;margin-bottom:12px;text-align:center;outline:none;transition:border .2s"
+        onfocus="this.style.borderColor='#378ADD'"
+        onblur="this.style.borderColor='#ddd'"
+        onkeydown="if(event.key==='Enter')document.getElementById('name-confirm-btn').click()"
+      />
+      <button id="name-confirm-btn" onclick="
+        const n=document.getElementById('name-input').value.trim();
+        if(!n){document.getElementById('name-input').style.borderColor='#E24B4A';return;}
+        document.getElementById('login-modal').remove();
+        handleLogin(n);
+      " style="width:100%;padding:13px;background:#378ADD;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">
+        開始學習 →
+      </button>
+      <div style="font-size:11px;color:#9b9b97;margin-top:12px">每次輸入相同名字即可繼續上次進度</div>
+    </div>`;
   document.body.appendChild(modal);
-  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+  setTimeout(()=>{
+    const inp=document.getElementById('name-input');
+    if(inp){inp.focus();if(savedName)inp.select();}
+  },100);
 }
 
-load();
-
-// First-visit hint: show bookmark reminder after first quiz completion
-// (injected once via renderPlan banner)
-function firstVisitBanner(){
-  if(Object.keys(S.completed).length>0)return'';
-  return `<div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:#E6F1FB;border-radius:var(--border-radius-md);border:0.5px solid #85B7EB;margin-bottom:1rem">
-    <div style="font-size:18px">💡</div>
-    <div style="flex:1;font-size:12px;color:#0C447C;line-height:1.6">完成第一天練習後，請到「學習紀錄」點<strong>「取得我的進度連結」</strong>，書籤該連結就能永久保留進度。</div>
-  </div>`;
+function handleLogin(name){
+  saveLastName(name);
+  const loaded=loadFromStorage(name);
+  if(loaded){
+    render();
+  } else {
+    S.studentName=name;
+    S.completed={};
+    save();
+    render();
+  }
 }
+
+// ── Initialise ────────────────────────────────────────────────
+(function init(){
+  // Try URL hash first (student opened their personal link)
+  if(loadFromHash()){
+    saveLastName(S.studentName);
+    render();
+    return;
+  }
+  // Try last-used name from this browser
+  const lastName=getSavedName();
+  if(lastName&&loadFromStorage(lastName)){
+    render();
+    return;
+  }
+  // No data found → show login
+  render(); // render shell first
+  showNameLogin();
+})();
+
 
 function render(){
+  if(!S.studentName){
+    // Just render the app wrapper shell; login modal will appear on top
+    document.getElementById('root').innerHTML='<div style="height:200px"></div>';
+    return;
+  }
   const r=document.getElementById('root');
   const tabs=['plan','learn','quiz','history'];
   const labels=['學習計畫','今日內容','今日練習','學習紀錄'];
-  let html=`<div class="tab-bar">${tabs.map((t,i)=>`<button class="tab ${S.tab===t?'active':''}" onclick="setTab('${t}')">${labels[i]}</button>`).join('')}</div>
+  let html=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:#E6F1FB;border-radius:var(--border-radius-md)">
+    <div style="font-size:13px;color:#0C447C">👤 <strong>${S.studentName}</strong> 的學習進度</div>
+    <button onclick="showNameLogin()" style="font-size:11px;color:#6b6b68;background:none;border:0.5px solid #ccc;border-radius:6px;padding:3px 8px;cursor:pointer">切換使用者</button>
+  </div>
+  <div class="tab-bar">${tabs.map((t,i)=>`<button class="tab ${S.tab===t?'active':''}" onclick="setTab('${t}')">${labels[i]}</button>`).join('')}</div>
   <div class="tab-content">`;
   if(S.tab==='plan')html+=renderPlan();
   else if(S.tab==='learn')html+=renderLearn();
@@ -877,6 +910,19 @@ function finishQuiz(){
   }
 }
 
+function autoSaveModal(){
+  // Progress is now saved automatically by name — just show a toast
+  save();
+  const existing=document.getElementById('save-toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.id='save-toast';
+  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2da44e;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:opacity .4s';
+  toast.textContent='✓ 進度已自動儲存';
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';setTimeout(()=>toast.remove(),400);},2000);
+}
+
 function renderQuizResult(){
   finishQuiz();
   const qs=S.quizState,item=SCHEDULE[S.currentIdx];
@@ -884,11 +930,12 @@ function renderQuizResult(){
   const emoji=pct>=80?'★':pct>=60?'◎':'○';
   const msg=pct>=80?'表現優秀！':pct>=60?'不錯，繼續加油！':'再複習一次，你可以的！';
   const nextIdx=S.currentIdx+1<SCHEDULE.length?S.currentIdx+1:null;
+  setTimeout(()=>autoSaveModal(),400);
   return `<div class="card" style="text-align:center;padding:2rem 1.5rem">
     <div style="font-size:36px;margin-bottom:8px">${emoji}</div>
     <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">${S.completed[S.currentIdx]?.label||''} 完成</div>
     <div style="font-size:24px;font-weight:500;color:#378ADD;margin:8px 0">${qs.score} <span style="font-size:15px;color:var(--color-text-secondary)">/ ${qs.total}</span></div>
-    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1.5rem">${msg}</div>
+    <div style="font-size:13px;color:#2da44e;margin-bottom:1rem;font-size:12px">✓ 進度已自動儲存，下次輸入「${S.studentName}」繼續</div>
     <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
       <button class="btn" onclick="S.quizState=null;render()">再練一次</button>
       ${nextIdx!==null?`<button class="btn btn-blue" onclick="S.currentIdx=${nextIdx};S.quizState=null;S.tab='learn';render()">下一項 →</button>`:'<span style="font-size:13px;color:#27500A;font-weight:500">全部完成！</span>'}
