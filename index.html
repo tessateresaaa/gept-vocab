@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全民英檢初級三個月單字學習計畫</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#f5f5f3;color:#1a1a18;min-height:100vh;padding:1rem}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* CSS variable fallbacks for standalone use */
+:root{
+  --color-background-primary:#ffffff;
+  --color-background-secondary:#f5f5f3;
+  --color-background-tertiary:#ebebea;
+  --color-background-info:#e6f1fb;
+  --color-background-success:#eaf3de;
+  --color-background-warning:#faeeda;
+  --color-background-danger:#fcebeb;
+  --color-text-primary:#1a1a18;
+  --color-text-secondary:#6b6b68;
+  --color-text-tertiary:#9b9b97;
+  --color-text-info:#0c447c;
+  --color-text-success:#27500a;
+  --color-text-warning:#633806;
+  --color-text-danger:#a32d2d;
+  --color-border-tertiary:rgba(0,0,0,0.12);
+  --color-border-secondary:rgba(0,0,0,0.22);
+  --color-border-primary:rgba(0,0,0,0.32);
+  --border-radius-md:8px;
+  --border-radius-lg:12px;
+  --border-radius-xl:16px;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',Arial,sans-serif;
+}
+
+@media(prefers-color-scheme:dark){
+  :root{
+    --color-background-primary:#1e1e1c;
+    --color-background-secondary:#2a2a28;
+    --color-background-tertiary:#333330;
+    --color-background-info:#042c53;
+    --color-background-success:#173404;
+    --color-background-warning:#412402;
+    --color-background-danger:#501313;
+    --color-text-primary:#e8e8e4;
+    --color-text-secondary:#9b9b97;
+    --color-text-tertiary:#6b6b68;
+    --color-text-info:#85b7eb;
+    --color-text-success:#c0dd97;
+    --color-text-warning:#fac775;
+    --color-text-danger:#f09595;
+    --color-border-tertiary:rgba(255,255,255,0.1);
+    --color-border-secondary:rgba(255,255,255,0.18);
+    --color-border-primary:rgba(255,255,255,0.28);
+  }
+}
+
+.app-wrap{max-width:720px;margin:0 auto;background:var(--color-background-tertiary);border-radius:var(--border-radius-xl);padding:1.25rem}
+.app-title{font-size:16px;font-weight:500;color:var(--color-text-primary);margin-bottom:1.25rem;text-align:center}
+.tab-bar{display:flex;gap:0;margin-bottom:1.5rem;border-bottom:0.5px solid var(--color-border-tertiary);background:var(--color-background-primary);border-radius:var(--border-radius-lg) var(--border-radius-lg) 0 0;padding:0 8px}
+.tab{padding:10px 16px;border:none;background:none;cursor:pointer;font-size:13px;color:var(--color-text-secondary);border-bottom:2px solid transparent;margin-bottom:-0.5px;transition:color .15s}
+.tab.active{color:var(--color-text-primary);border-bottom-color:var(--color-text-primary);font-weight:500}
+.tab-content{background:var(--color-background-primary);border-radius:0 0 var(--border-radius-lg) var(--border-radius-lg);padding:1.25rem;min-height:400px}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:12px}
+.btn{padding:8px 16px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:var(--color-background-primary);cursor:pointer;font-size:13px;font-weight:500;color:var(--color-text-primary);transition:all .15s}
+.btn:hover{background:var(--color-background-secondary)}
+.btn-blue{background:#378ADD;border-color:#378ADD;color:#fff}
+.btn-blue:hover{background:#185FA5}
+.btn-sm{padding:5px 12px;font-size:12px}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:var(--border-radius-md)}
+.badge-review{background:#FAEEDA;color:#633806}
+.badge-exam{background:#FCEBEB;color:#A32D2D}
+.badge-day{background:#E6F1FB;color:#0C447C}
+.badge-done{background:#EAF3DE;color:#27500A}
+.progress-bar{height:5px;background:var(--color-background-secondary);border-radius:3px;margin:6px 0}
+.progress-fill{height:100%;border-radius:3px;background:#378ADD;transition:width .4s}
+.day-scroll{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:5px;margin-bottom:1rem}
+.day-cell{padding:7px 4px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);font-size:11px;cursor:pointer;text-align:center;color:var(--color-text-secondary);transition:all .15s;line-height:1.3}
+.day-cell:hover{border-color:var(--color-border-secondary)}
+.day-cell.active{border-color:#378ADD;color:#0C447C;background:#E6F1FB}
+.day-cell.done{background:#EAF3DE;border-color:#639922;color:#27500A}
+.day-cell.review-cell{background:#FAEEDA;border-color:#BA7517;color:#633806}
+.day-cell.review-cell.done{background:#EAF3DE;border-color:#639922;color:#27500A}
+.day-cell.exam-cell{background:#FCEBEB;border-color:#E24B4A;color:#A32D2D}
+.day-cell.exam-cell.done{background:#EAF3DE;border-color:#639922;color:#27500A}
+.word-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.word-row:last-child{border-bottom:none}
+.wnum{font-size:11px;color:var(--color-text-secondary);min-width:22px}
+.wen{font-weight:500;font-size:14px;flex:1;color:var(--color-text-primary)}
+.wzh{font-size:13px;color:var(--color-text-secondary)}
+.wpos{font-size:11px;color:var(--color-text-secondary);min-width:28px;text-align:right}
+.quiz-box{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:12px}
+.fill-input{width:100%;padding:9px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.fill-input:focus{outline:none;border-color:#378ADD}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.mi{padding:9px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);text-align:center;transition:all .15s}
+.mi.sel{border-color:#378ADD;background:#E6F1FB;color:#0C447C}
+.mi.ok{border-color:#639922;background:#EAF3DE;color:#27500A;cursor:default}
+.mi.bad{border-color:#E24B4A;background:#FCEBEB;color:#A32D2D}
+.res-ok{background:#EAF3DE;color:#27500A;padding:8px 12px;border-radius:var(--border-radius-md);font-size:13px;margin-top:6px}
+.res-bad{background:#FCEBEB;color:#A32D2D;padding:8px 12px;border-radius:var(--border-radius-md);font-size:13px;margin-top:6px}
+.mc-opt{padding:9px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary);margin-bottom:6px;transition:all .15s;display:block;width:100%;text-align:left}
+.mc-opt:hover{background:var(--color-background-secondary)}
+.mc-opt.ok{border-color:#639922;background:#EAF3DE;color:#27500A}
+.mc-opt.bad{border-color:#E24B4A;background:#FCEBEB;color:#A32D2D}
+.mc-opt.reveal{border-color:#639922;background:#EAF3DE;color:#27500A}
+.hist-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.hist-row:last-child{border-bottom:none}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-n{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.stat-l{font-size:11px;color:var(--color-text-secondary);margin-top:2px}
+.month-label{font-size:12px;font-weight:500;color:var(--color-text-secondary);padding:8px 0 4px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:8px}
+</style>
+</head>
+<body>
+
+<div class="app-wrap">
+<div class="app-title">全民英檢初級 — 三個月單字學習計畫</div>
+<h2 class="sr-only">全民英檢初級三個月完整學習計畫，含五日複習與月底大考</h2>
+<div id="root"></div>
+</div>
+
+<script>
+const WORDS=[
+["apple","蘋果","n."],["book","書","n."],["cat","貓","n."],["dog","狗","n."],["egg","蛋","n."],
+["fish","魚","n."],["go","去","v."],["hat","帽子","n."],["ice","冰","n."],["jump","跳","v."],
+["key","鑰匙","n."],["lamp","燈","n."],["map","地圖","n."],["night","夜晚","n."],["open","打開","v."],
+["play","玩","v."],["queen","女王","n."],["run","跑","v."],["sun","太陽","n."],["tree","樹","n."],
+["umbrella","雨傘","n."],["voice","聲音","n."],["walk","走路","v."],["box","箱子","n."],["yellow","黃色","adj."],
+["zoo","動物園","n."],["arm","手臂","n."],["bed","床","n."],["cup","杯子","n."],["door","門","n."],
+["ear","耳朵","n."],["face","臉","n."],["give","給","v."],["hand","手","n."],["ink","墨水","n."],
+["jar","罐子","n."],["kick","踢","v."],["leg","腿","n."],["milk","牛奶","n."],["nose","鼻子","n."],
+["old","老的","adj."],["pig","豬","n."],["quick","快的","adj."],["rain","雨","n."],["sit","坐","v."],
+["table","桌子","n."],["use","使用","v."],["van","廂型車","n."],["water","水","n."],["exit","出口","n."],
+["yard","院子","n."],["happy","快樂的","adj."],["angry","生氣的","adj."],["busy","忙碌的","adj."],
+["cold","冷的","adj."],["dark","黑暗的","adj."],["easy","容易的","adj."],["fast","快速的","adj."],
+["good","好的","adj."],["hard","困難的","adj."],["ill","生病的","adj."],["kind","友善的","adj."],
+["long","長的","adj."],["nice","好的","adj."],["pink","粉紅色","adj."],["red","紅色","adj."],
+["soft","軟的","adj."],["tall","高的","adj."],["ugly","醜的","adj."],["warm","溫暖的","adj."],
+["young","年輕的","adj."],["answer","回答","v."],["bring","帶來","v."],["call","打電話","v."],
+["dance","跳舞","v."],["eat","吃","v."],["find","找到","v."],["help","幫忙","v."],["invite","邀請","v."],
+["join","加入","v."],["keep","保持","v."],["learn","學習","v."],["make","製作","v."],["need","需要","v."],
+["offer","提供","v."],["put","放","v."],["reach","到達","v."],["send","寄送","v."],["take","拿","v."],
+["understand","了解","v."],["visit","拜訪","v."],["wait","等待","v."],["know","知道","v."],
+["zero","零","n."],["above","在上面","prep."],["below","在下面","prep."],["between","之間","prep."],
+["after","之後","prep."],["before","之前","prep."],["baby","嬰兒","n."],["city","城市","n."],
+["dream","夢","n."],["earth","地球","n."],["family","家庭","n."],["garden","花園","n."],
+["house","房子","n."],["island","島嶼","n."],["jungle","叢林","n."],["kitchen","廚房","n."],
+["library","圖書館","n."],["mountain","山","n."],["nation","國家","n."],["ocean","海洋","n."],
+["palace","宮殿","n."],["river","河流","n."],["school","學校","n."],["ticket","票","n."],
+["uniform","制服","n."],["village","村莊","n."],["window","窗戶","n."],["airport","機場","n."],
+["bridge","橋","n."],["church","教堂","n."],["desert","沙漠","n."],["engine","引擎","n."],
+["forest","森林","n."],["ground","地面","n."],["harbor","港口","n."],["journal","日記","n."],
+["ladder","梯子","n."],["mirror","鏡子","n."],["notice","注意","v."],["office","辦公室","n."],
+["pencil","鉛筆","n."],["rabbit","兔子","n."],["shadow","影子","n."],["temple","廟宇","n."],
+["tunnel","隧道","n."],["valley","山谷","n."],["wallet","錢包","n."],["basket","籃子","n."],
+["button","鈕扣","n."],["candle","蠟燭","n."],["corner","角落","n."],["drawer","抽屜","n."],
+["finger","手指","n."],["future","未來","n."],["gloves","手套","n."],["insect","昆蟲","n."],
+["kitten","小貓","n."],["lemon","檸檬","n."],["mother","媽媽","n."],["needle","針","n."],
+["orange","柳橙","n."],["pepper","胡椒","n."],["rocket","火箭","n."],["teapot","茶壺","n."],
+["winter","冬天","n."],["blanket","毯子","n."],["captain","船長","n."],["diamond","鑽石","n."],
+["example","例子","n."],["fashion","時尚","n."],["genuine","真實的","adj."],["hundred","一百","n."],
+["improve","改善","v."],["journey","旅程","n."],["license","執照","n."],["machine","機器","n."],
+["natural","自然的","adj."],["opinion","意見","n."],["perfect","完美的","adj."],
+["quarter","四分之一","n."],["receive","收到","v."],["service","服務","n."],
+["thought","思考","n."],["weather","天氣","n."],["achieve","達成","v."],["ancient","古代的","adj."],
+["balance","平衡","n."],["careful","小心的","adj."],["discuss","討論","v."],["express","表達","v."],
+["freedom","自由","n."],["general","一般的","adj."],["imagine","想像","v."],["jealous","嫉妒的","adj."],
+["mistake","錯誤","n."],["outside","外面","adv."],["popular","流行的","adj."],["realize","意識到","v."],
+["silence","沉默","n."],["someone","某人","pron."],["already","已經","adv."],["because","因為","conj."],
+["certain","確定的","adj."],["deliver","遞送","v."],["educate","教育","v."],["forever","永遠","adv."],
+["include","包括","v."],["morning","早晨","n."],["perhaps","也許","adv."],["quickly","快速地","adv."],
+["respect","尊重","v."],["stadium","體育場","n."],["trouble","麻煩","n."],["victory","勝利","n."],
+["without","沒有","prep."],["address","地址","n."],["collect","收集","v."],["develop","發展","v."],
+["explain","解釋","v."],["feeling","感覺","n."],["grammar","文法","n."],["history","歷史","n."],
+["another","另一個","adj."],["century","世紀","n."],["curious","好奇的","adj."],
+["digital","數位的","adj."],["elegant","優雅的","adj."],["finally","最後","adv."],["helpful","有幫助的","adj."],
+["laughter","笑聲","n."],["message","訊息","n."],["perform","表演","v."],
+["provide","提供","v."],["replace","替換","v."],["suggest","建議","v."],["tonight","今晚","adv."],
+["unusual","不尋常的","adj."],["violent","暴力的","adj."],["welcome","歡迎","v."],["excited","興奮的","adj."],
+["further","更遠的","adj."],["growing","成長中的","adj."],["healthy","健康的","adj."],["instead","反而","adv."],
+["limited","有限的","adj."],["mystery","謎","n."],
+["network","網絡","n."],["opening","開幕","n."],["project","計畫","n."],["quality","品質","n."],
+["routine","例行公事","n."],["special","特別的","adj."],["teacher","老師","n."],["visible","可見的","adj."],
+["written","書寫的","adj."],["amazing","驚人的","adj."],["believe","相信","v."],["contain","包含","v."],
+["defense","防禦","n."],["evening","傍晚","n."],["foreign","外國的","adj."],["graphic","圖形","adj."],
+["intend","打算","v."],["mineral","礦物","n."],["notable","值得注意的","adj."],["observe","觀察","v."],
+["publish","出版","v."],["require","需要","v."],["scatter","散布","v."],["thermal","熱的","adj."],
+["upgrade","升級","v."],["various","各種的","adj."],["ability","能力","n."],["cabinet","內閣","n."],
+["declare","宣布","v."],["element","元素","n."],["feature","特色","n."],["gesture","手勢","n."],
+["horizon","地平線","n."],["inspire","激勵","v."],["justice","正義","n."],["lecture","演講","n."],
+["mention","提及","v."],["nothing","沒有","pron."],
+["remains","遺跡","n."],["serious","嚴肅的","adj."],["similar","相似的","adj."],["through","通過","prep."],
+["universe","宇宙","n."],
+
+["uncle","叔叔","n."],["aunt","阿姨","n."],["cousin","表親","n."],["grandfather","爺爺","n."],["grandmother","奶奶","n."],
+["nephew","姪子","n."],["niece","姪女","n."],["neighbor","鄰居","n."],["friend","朋友","n."],["stranger","陌生人","n."],
+["partner","夥伴","n."],["husband","丈夫","n."],["wife","妻子","n."],["parent","父母","n."],["adult","成人","n."],
+["teenager","青少年","n."],["classmate","同學","n."],["roommate","室友","n."],["guest","客人","n."],["owner","主人","n."],
+["customer","顧客","n."],["manager","經理","n."],["leader","領導者","n."],["member","成員","n."],["author","作者","n."],
+["artist","藝術家","n."],["singer","歌手","n."],["dancer","舞者","n."],["doctor","醫生","n."],["nurse","護士","n."],
+["dentist","牙醫","n."],["farmer","農夫","n."],["driver","司機","n."],["pilot","飛行員","n."],["soldier","軍人","n."],
+["police","警察","n."],["lawyer","律師","n."],["engineer","工程師","n."],["scientist","科學家","n."],["chef","主廚","n."],
+["waiter","服務生","n."],["clerk","店員","n."],["guard","警衛","n."],["worker","工人","n."],["body","身體","n."],
+["head","頭","n."],["neck","脖子","n."],["shoulder","肩膀","n."],["chest","胸部","n."],["stomach","胃","n."],
+["back","背部","n."],["knee","膝蓋","n."],["foot","腳","n."],["toe","腳趾","n."],["skin","皮膚","n."],
+["hair","頭髮","n."],["tooth","牙齒","n."],["bone","骨頭","n."],["heart","心臟","n."],["brain","大腦","n."],
+["health","健康","n."],["medicine","藥","n."],["hospital","醫院","n."],["pain","疼痛","n."],["fever","發燒","n."],
+["cough","咳嗽","n."],["headache","頭痛","n."],["injury","傷害","n."],["bandage","繃帶","n."],["pill","藥丸","n."],
+["clinic","診所","n."],["surgery","手術","n."],["exercise","運動","n."],["energy","活力","n."],["strength","力氣","n."],
+["weight","體重","n."],["bread","麵包","n."],["rice","米飯","n."],["noodle","麵條","n."],["soup","湯","n."],
+["meat","肉","n."],["beef","牛肉","n."],["chicken","雞肉","n."],["pork","豬肉","n."],["vegetable","蔬菜","n."],
+["fruit","水果","n."],["banana","香蕉","n."],["grape","葡萄","n."],["strawberry","草莓","n."],["potato","馬鈴薯","n."],
+["tomato","番茄","n."],["onion","洋蔥","n."],["carrot","紅蘿蔔","n."],["cabbage","捲心菜","n."],["cheese","起司","n."],
+["butter","奶油","n."],["sugar","糖","n."],["salt","鹽","n."],["sauce","醬料","n."],["snack","零食","n."],
+["cake","蛋糕","n."],["cookie","餅乾","n."],["chocolate","巧克力","n."],["candy","糖果","n."],["juice","果汁","n."],
+["coffee","咖啡","n."],["tea","茶","n."],["wine","酒","n."],["breakfast","早餐","n."],["lunch","午餐","n."],
+["dinner","晚餐","n."],["meal","一餐","n."],["recipe","食譜","n."],["restaurant","餐廳","n."],["menu","菜單","n."],
+["plate","盤子","n."],["bowl","碗","n."],["spoon","湯匙","n."],["fork","叉子","n."],["knife","刀子","n."],
+["napkin","餐巾","n."],["bottle","瓶子","n."],["flavor","味道","n."],["delicious","美味的","adj."],["fresh","新鮮的","adj."],
+["sweet","甜的","adj."],["sour","酸的","adj."],["bitter","苦的","adj."],["spicy","辣的","adj."],["raw","生的","adj."],
+["boiled","煮過的","adj."],["fried","炸的","adj."],["roast","烘烤","v."],["bake","烘烤","v."],["boil","煮","v."],
+["fry","煎","v."],["chop","切","v."],["stir","攪拌","v."],["pour","倒","v."],["taste","品嚐","v."],
+["chew","咀嚼","v."],["swallow","吞嚥","v."],["mix","混合","v."],["peel","剝皮","v."],["clothes","衣服","n."],
+["shirt","襯衫","n."],["pants","褲子","n."],["shorts","短褲","n."],["skirt","裙子","n."],["dress","洋裝","n."],
+["jacket","夾克","n."],["coat","外套","n."],["sweater","毛衣","n."],["socks","襪子","n."],["shoes","鞋子","n."],
+["boots","靴子","n."],["sandals","涼鞋","n."],["belt","腰帶","n."],["scarf","圍巾","n."],["necklace","項鍊","n."],
+["earrings","耳環","n."],["ring","戒指","n."],["watch","手錶","n."],["glasses","眼鏡","n."],["purse","錢包","n."],
+["backpack","背包","n."],["luggage","行李","n."],["size","尺寸","n."],["price","價格","n."],["discount","折扣","n."],
+["sale","特賣","n."],["receipt","收據","n."],["cash","現金","n."],["coin","硬幣","n."],["bill","鈔票","n."],
+["change","找零","n."],["store","商店","n."],["market","市場","n."],["mall","購物中心","n."],["shopping","購物","n."],
+["cashier","收銀員","n."],["pay","付錢","v."],["spend","花費","v."],["cost","花費","v."],["afford","負擔得起","v."],
+["sell","賣","v."],["buy","買","v."],["wear","穿","v."],["try on","試穿","v."],["fit","合身","v."],
+["match","搭配","v."],["expensive","昂貴的","adj."],["cheap","便宜的","adj."],["fancy","華麗的","adj."],["plain","樸素的","adj."],
+["loose","寬鬆的","adj."],["tight","緊的","adj."],["striped","條紋的","adj."],["checked","格紋的","adj."],["furniture","家具","n."],
+["sofa","沙發","n."],["chair","椅子","n."],["desk","書桌","n."],["shelf","架子","n."],["wardrobe","衣汃","n."],
+["carpet","地毯","n."],["curtain","窗簾","n."],["ceiling","天花板","n."],["wall","牆","n."],["floor","地板","n."],
+["roof","屋頂","n."],["stairs","樓梯","n."],["balcony","陽台","n."],["bathroom","浴室","n."],["bedroom","臥室","n."],
+["living room","客廳","n."],["closet","衣惥","n."],["towel","毛巾","n."],["soap","肥皂","n."],["toothbrush","牙刷","n."],
+["shampoo","洗髮精","n."],["clock","時鐘","n."],["calendar","日曆","n."],["phone","電話","n."],["computer","電腦","n."],
+["television","電視","n."],["radio","收音機","n."],["camera","相機","n."],["battery","電池","n."],["switch","開關","n."],
+["plug","插頭","n."],["remote","遙控器","n."],["fan","電風扇","n."],["heater","暖氣","n."],["refrigerator","冰箱","n."],
+["stove","爐子","n."],["oven","烤箱","n."],["sink","水槽","n."],["broom","掃帚","n."],["trash","垃圾","n."],
+["bin","垃圾桶","n."],["bucket","水桶","n."],["rope","繩子","n."],["chain","鏈子","n."],["lock","鎖","n."],
+["screw","螺絲","n."],["nail","釘子","n."],["hammer","錘子","n."],["tool","工具","n."],["paint","油漆","n."],
+["student","學生","n."],["classroom","教室","n."],["lesson","課程","n."],["subject","科目","n."],["homework","作業","n."],
+["exam","考試","n."],["test","測驗","n."],["question","問題","n."],["mark","分數","n."],["grade","年級","n."],
+["report","報告","n."],["essay","文章","n."],["paper","紙","n."],["notebook","筆記本","n."],["chalk","粉筆","n."],
+["whiteboard","白板","n."],["dictionary","字典","n."],["textbook","教科書","n."],["course","課程","n."],["semester","學期","n."],
+["principal","校長","n."],["college","大學","n."],["university","大學","n."],["degree","學位","n."],["education","教育","n."],
+["knowledge","知識","n."],["skill","技能","n."],["practice","練習","n."],["study","學習","v."],["review","複習","v."],
+["memorize","記憶","v."],["solve","解決","v."],["pass","通過","v."],["fail","失敗","v."],["graduate","畢業","v."],
+["attend","參加","v."],["focus","專心","v."],["copy","抄寫","v."],["raise","舉起","v."],["repeat","重複","v."],
+["country","國家","n."],["continent","大陸","n."],["capital","首都","n."],["border","邊界","n."],["area","地區","n."],
+["region","地區","n."],["street","街道","n."],["road","道路","n."],["avenue","大道","n."],["lane","巷子","n."],
+["sidewalk","人行道","n."],["crossing","十字路口","n."],["traffic","交通","n."],["signal","信號","n."],["station","車站","n."],
+["platform","平台","n."],["gate","大門","n."],["entrance","入口","n."],["hall","大廳","n."],["lobby","大廳","n."],
+["elevator","電梯","n."],["escalator","手扶梯","n."],["parking","停車","n."],["square","廣場","n."],["park","公園","n."],
+["beach","海灘","n."],["lake","湖","n."],["pond","池塘","n."],["hill","小山","n."],["cave","洞穴","n."],
+["cliff","懸崖","n."],["field","田野","n."],["farm","農場","n."],["barn","穀倉","n."],["factory","工廠","n."],
+["warehouse","倉庫","n."],["building","建築物","n."],["tower","塔","n."],["castle","城堡","n."],["museum","博物館","n."],
+["gallery","畫廊","n."],["theater","劇院","n."],["cinema","電影院","n."],["gym","健身房","n."],["pool","泳池","n."],
+["court","球場","n."],["studio","工作室","n."],["lab","實驗室","n."],["sky","天空","n."],["cloud","雲","n."],
+["star","星星","n."],["moon","月亮","n."],["wind","風","n."],["storm","風暴","n."],["thunder","雷","n."],
+["lightning","閃電","n."],["fog","霧","n."],["snow","雪","n."],["flood","水災","n."],["drought","乾旱","n."],
+["season","季節","n."],["spring","春天","n."],["summer","夏天","n."],["autumn","秋天","n."],["leaf","葉子","n."],
+["branch","樹枝","n."],["root","樹根","n."],["seed","種子","n."],["flower","花","n."],["grass","草","n."],
+["bush","灌木","n."],["plant","植物","n."],["soil","土壤","n."],["rock","岩石","n."],["sand","沙子","n."],
+["wave","海浪","n."],["fire","火","n."],["smoke","煙","n."],["ash","灰","n."],["lion","獅子","n."],
+["tiger","老虎","n."],["bear","熊","n."],["wolf","狼","n."],["fox","狐狸","n."],["deer","鹿","n."],
+["elephant","象","n."],["monkey","猴子","n."],["horse","馬","n."],["cow","牛","n."],["sheep","羊","n."],
+["goat","山羊","n."],["duck","鴨子","n."],["bird","鳥","n."],["eagle","老鷹","n."],["owl","貓頭鷹","n."],
+["snake","蛇","n."],["frog","青蛙","n."],["turtle","烏龜","n."],["bee","蜜蜂","n."],["butterfly","蝴蝶","n."],
+["ant","螞蟻","n."],["spider","蜘蛛","n."],["fly","蒼蠅","n."],["mosquito","蚊子","n."],["whale","鯨魚","n."],
+["shark","鯊魚","n."],["dolphin","海豚","n."],["crab","螃蟹","n."],["shrimp","蝦","n."],["seal","海豹","n."],
+["minute","分鐘","n."],["second","秒","n."],["hour","小時","n."],["week","星期","n."],["month","月","n."],
+["year","年","n."],["date","日期","n."],["holiday","假期","n."],["birthday","生日","n."],["anniversary","紀念日","n."],
+["schedule","行程表","n."],["past","過去","n."],["present","現在","n."],["moment","片刻","n."],["period","期間","n."],
+["beginning","開始","n."],["ending","結尾","n."],["middle","中間","n."],["start","開始","v."],["finish","結束","v."],
+["continue","繼續","v."],["pause","暫停","v."],["stop","停止","v."],["begin","開始","v."],["end","結束","v."],
+["last","持續","v."],["delay","延遲","v."],["plan","計畫","n."],["goal","目標","n."],["target","目標","n."],
+["task","任務","n."],["duty","責任","n."],["job","工作","n."],["work","工作","n."],["career","職業","n."],
+["salary","薪水","n."],["income","收入","n."],["budget","預算","n."],["expense","花費","n."],["profit","利潤","n."],
+["loss","損失","n."],["debt","債務","n."],["savings","存款","n."],["bank","銀行","n."],["account","帳戶","n."],
+["card","卡片","n."],["loan","貸款","n."],["arrive","到達","v."],["depart","離開","v."],["enter","進入","v."],
+["leave","離開","v."],["climb","爬","v."],["fall","跌倒","v."],["push","推","v."],["pull","拉","v."],
+["throw","丟","v."],["catch","接","v."],["hold","拿著","v."],["drop","掉落","v."],["carry","攜帶","v."],
+["lift","舉起","v."],["move","移動","v."],["turn","轉動","v."],["shake","搖動","v."],["break","打破","v."],
+["fix","修理","v."],["build","建造","v."],["create","創造","v."],["destroy","破壞","v."],["clean","清潔","v."],
+["wash","洗","v."],["sweep","掃地","v."],["wipe","擦拭","v."],["fold","折疊","v."],["hang","掛","v."],
+["cut","切","v."],["tear","撕裂","v."],["draw","畫","v."],["write","寫","v."],["read","讀","v."],
+["speak","說話","v."],["talk","講話","v."],["listen","聽","v."],["hear","聽到","v."],["see","看見","v."],
+["look","看","v."],["show","展示","v."],["hide","隱藏","v."],["search","搜尋","v."],["search for","尋找","v."],
+["choose","選擇","v."],["decide","決定","v."],["agree","同意","v."],["disagree","不同意","v."],["argue","爭論","v."],
+["complain","抱怨","v."],["apologize","道歉","v."],["thank","感謝","v."],["greet","問候","v."],["smile","微笑","v."],
+["laugh","笑","v."],["cry","哭","v."],["shout","大叫","v."],["whisper","低語","v."],["sing","唱歌","v."],
+["whistle","吹口哨","v."],["clap","拍手","v."],["point","指","v."],["nod","點頭","v."],["bow","鞠躬","v."],
+["hug","擁抱","v."],["kiss","親吻","v."],["touch","觸碰","v."],["feel","感覺","v."],["smell","聞","v."],
+["sleep","睡覺","v."],["wake","醒來","v."],["rest","休息","v."],["relax","放鬆","v."],["worry","擔心","v."],
+["fear","害怕","v."],["enjoy","享受","v."],["prefer","偏好","v."],["hate","討厭","v."],["love","愛","v."],
+["like","喜歡","v."],["miss","錯過","v."],["forget","忘記","v."],["remember","記得","v."],["guess","猜測","v."],
+["wonder","想知道","v."],["doubt","懷疑","v."],["expect","期待","v."],["hope","希望","v."],["wish","希望","v."],
+["prepare","準備","v."],["arrange","安排","v."],["organize","組織","v."],["manage","管理","v."],["control","控制","v."],
+["lead","領導","v."],["follow","跟隨","v."],["guide","引導","v."],["teach","教導","v."],["train","訓練","v."],
+["coach","指導","v."],["describe","描述","v."],["compare","比較","v."],["measure","測量","v."],["count","數","v."],
+["calculate","計算","v."],["check","檢查","v."],["examine","檢查","v."],["investigate","調查","v."],["announce","宣布","v."],
+["warn","警告","v."],["remind","提醒","v."],["advise","建議","v."],["recommend","推薦","v."],["allow","允許","v."],
+["permit","允許","v."],["forbid","禁止","v."],["ban","禁止","v."],["accept","接受","v."],["refuse","拒絕","v."],
+["reject","拒絕","v."],["approve","批准","v."],["promise","承諾","v."],["guarantee","保證","v."],["protect","保護","v."],
+["save","拯救","v."],["rescue","救援","v."],["escape","逃脫","v."],["chase","追逐","v."],["hunt","狩獵","v."],
+["attack","攻擊","v."],["defend","防禦","v."],["fight","打架","v."],["win","贏","v."],["lose","輸","v."],
+["beat","打敗","v."],["tie","打結","v."],["score","得分","v."],["compete","競爭","v."],["challenge","挑戰","v."],
+["succeed","成功","v."],["struggle","掙扎","v."],["survive","存活","v."],["recover","恢復","v."],["heal","治療","v."],
+["cure","治癒","v."],["grow","成長","v."],["shrink","縮小","v."],["increase","增加","v."],["decrease","減少","v."],
+["lower","降低","v."],["rise","上升","v."],["spread","散播","v."],["gather","聚集","v."],["divide","分割","v."],
+["combine","結合","v."],["separate","分離","v."],["connect","連接","v."],["disconnect","斷開","v."],["attach","附加","v."],
+["remove","移除","v."],["add","增加","v."],["subtract","減少","v."],["multiply","乘","v."],["fill","填滿","v."],
+["empty","清空","v."],["load","裝載","v."],["unload","卸載","v."],["pack","打包","v."],["unpack","打開包裝","v."],
+["wrap","包裝","v."],["unwrap","打開","v."],["unlock","解鎖","v."],["close","關閉","v."],["shut","關上","v."],
+["press","按","v."],["click","點擊","v."],["type","打字","v."],["print","列印","v."],["scan","掃描","v."],
+["download","下載","v."],["upload","上傳","v."],["update","更新","v."],["install","安裝","v."],["delete","刪除","v."],
+["browse","瀏覽","v."],["log in","登入","v."],["log out","登出","v."],["charge","充電","v."],["recharge","重新充電","v."],
+["operate","操作","v."],["function","運作","v."],["repair","修理","v."],["maintain","維護","v."],["assemble","組裝","v."],
+["design","設計","v."],["produce","生產","v."],["manufacture","製造","v."],["package","包裝","v."],["import","進口","v."],
+["export","出口","v."],["trade","交易","v."],["exchange","交換","v."],["donate","捐贈","v."],["contribute","貢獻","v."],
+["volunteer","志願服務","v."],["participate","參與","v."],["belong","屬於","v."],["own","擁有","v."],["lend","借出","v."],
+["borrow","借入","v."],["rent","租","v."],["lease","租賃","v."],["share","分享","v."],["beautiful","美麗的","adj."],
+["handsome","帥的","adj."],["pretty","漂亮的","adj."],["lovely","可愛的","adj."],["cute","可愛的","adj."],["strange","奇怪的","adj."],
+["weird","怪異的","adj."],["funny","好笑的","adj."],["boring","無聊的","adj."],["interesting","有趣的","adj."],["exciting","令人興奮的","adj."],
+["scary","可怕的","adj."],["dangerous","危險的","adj."],["safe","安全的","adj."],["risky","冒險的","adj."],["brave","勇敢的","adj."],
+["shy","害羞的","adj."],["polite","禮貌的","adj."],["rude","粗魯的","adj."],["honest","誠實的","adj."],["lazy","懶惰的","adj."],
+["active","主動的","adj."],["clever","聰明的","adj."],["smart","聰明的","adj."],["wise","有智慧的","adj."],["foolish","愚蠢的","adj."],
+["silly","傻的","adj."],["strict","嚴格的","adj."],["gentle","溫和的","adj."],["calm","冷靜的","adj."],["nervous","緊張的","adj."],
+["proud","自豪的","adj."],["ashamed","羞愧的","adj."],["confident","有信心的","adj."],["confused","困惑的","adj."],["surprised","驚訝的","adj."],
+["disappointed","失望的","adj."],["satisfied","滿意的","adj."],["frustrated","受挫的","adj."],["lonely","寂寞的","adj."],["bored","無聊的","adj."],
+["tired","疲累的","adj."],["sleepy","想睡的","adj."],["hungry","飢餓的","adj."],["thirsty","渴的","adj."],["full","飽的","adj."],
+["sick","生病的","adj."],["weak","虛弱的","adj."],["strong","強壯的","adj."],["heavy","重的","adj."],["light","輕的","adj."],
+["thick","厚的","adj."],["thin","薄的","adj."],["wide","寬的","adj."],["narrow","窄的","adj."],["deep","深的","adj."],
+["shallow","淺的","adj."],["high","高的","adj."],["low","低的","adj."],["near","近的","adj."],["far","遠的","adj."],
+["distant","遙遠的","adj."],["smooth","平滑的","adj."],["rough","粗糙的","adj."],["sharp","尖銳的","adj."],["dull","鈍的","adj."],
+["loud","大聲的","adj."],["quiet","安靜的","adj."],["noisy","吵鬧的","adj."],["clear","清晰的","adj."],["cloudy","多雲的","adj."],
+["sunny","晴朗的","adj."],["windy","有風的","adj."],["rainy","下雨的","adj."],["dry","乾的","adj."],["wet","濕的","adj."],
+["dirty","髒的","adj."],["broken","壞掉的","adj."],["whole","完整的","adj."],["new","新的","adj."],["modern","現代的","adj."],
+["traditional","傳統的","adj."],["common","常見的","adj."],["rare","稀有的","adj."],["normal","正常的","adj."],["abnormal","異常的","adj."],
+["regular","規律的","adj."],["correct","正確的","adj."],["wrong","錯誤的","adj."],["true","真實的","adj."],["false","假的","adj."],
+["real","真實的","adj."],["fake","假的","adj."],["main","主要的","adj."],["major","主要的","adj."],["minor","次要的","adj."],
+["extra","額外的","adj."],["entire","整個的","adj."],["public","公開的","adj."],["private","私人的","adj."],["personal","個人的","adj."],
+["social","社會的","adj."],["national","國家的","adj."],["international","國際的","adj."],["local","當地的","adj."],["global","全球的","adj."],
+["central","中央的","adj."],["northern","北方的","adj."],["southern","南方的","adj."],["eastern","東方的","adj."],["western","西方的","adj."],
+["available","可取得的","adj."],["possible","可能的","adj."],["impossible","不可能的","adj."],["likely","可能的","adj."],["necessary","必要的","adj."],
+["important","重要的","adj."],["urgent","緊急的","adj."],["useful","有用的","adj."],["useless","無用的","adj."],["valuable","有價值的","adj."],
+["worthless","沒有價值的","adj."],["simple","簡單的","adj."],["complex","複雜的","adj."],["complicated","複雜的","adj."],["basic","基本的","adj."],
+["advanced","進階的","adj."],["typical","典型的","adj."],["specific","特定的","adj."],["particular","特定的","adj."],["final","最後的","adj."],
+["initial","初始的","adj."],["original","原始的","adj."],["formal","正式的","adj."],["informal","非正式的","adj."],["casual","休閒的","adj."],
+["official","官方的","adj."],["legal","合法的","adj."],["illegal","非法的","adj."],["fair","公平的","adj."],["unfair","不公平的","adj."],
+["equal","平等的","adj."],["unequal","不平等的","adj."],["independent","獨立的","adj."],["dependent","依賴的","adj."],["responsible","負責的","adj."],
+["careless","粗心的","adj."],["successful","成功的","adj."],["failed","失敗的","adj."],["famous","有名的","adj."],["unknown","未知的","adj."],
+["secret","秘密的","adj."],["closed","關閉的","adj."],["free","免費的","adj."],["paid","付費的","adj."],["full-time","全職的","adj."],
+["part-time","兼職的","adj."],["temporary","暫時的","adj."],["permanent","永久的","adj."],["single","單身的","adj."],["married","已婚的","adj."],
+["divorced","離婚的","adj."],["alive","活著的","adj."],["dead","死的","adj."],["asleep","睡著的","adj."],["awake","醒著的","adj."],
+["always","總是","adv."],["never","從不","adv."],["often","常常","adv."],["sometimes","有時候","adv."],["usually","通常","adv."],
+["rarely","很少","adv."],["frequently","頻繁地","adv."],["occasionally","偶爾","adv."],["soon","快","adv."],["later","稍後","adv."],
+["early","早","adv."],["late","晚","adv."],["now","現在","adv."],["then","然後","adv."],["today","今天","adv."],
+["yesterday","昨天","adv."],["tomorrow","明天","adv."],["recently","最近","adv."],["immediately","立刻","adv."],["eventually","最終","adv."],
+["suddenly","突然地","adv."],["gradually","逐漸地","adv."],["slowly","緩慢地","adv."],["carefully","小心地","adv."],["loudly","大聲地","adv."],
+["quietly","安靜地","adv."],["clearly","清楚地","adv."],["roughly","粗略地","adv."],["exactly","確切地","adv."],["nearly","幾乎","adv."],
+["almost","幾乎","adv."],["completely","完全地","adv."],["totally","完全地","adv."],["partly","部分地","adv."],["really","真的","adv."],
+["actually","實際上","adv."],["truly","真正地","adv."],["simply","簡單地","adv."],["merely","僅僅","adv."],["only","只","adv."],
+["even","甚至","adv."],["also","也","adv."],["too","也","adv."],["either","也","adv."],["neither","也不","adv."],
+["both","兩者都","adv."],["each","每個","adv."],["every","每個","adj."],["all","所有","adj."],["most","大多數","adj."],
+["some","一些","adj."],["any","任何","adj."],["none","沒有任何","pron."],["several","幾個","adj."],["enough","足夠的","adj."],
+["plenty","充足","n."],["extremely","極其","adv."],["incredibly","難以置信地","adv."],["fairly","相當地","adv."],["rather","頗為","adv."],
+["quite","相當","adv."],["just","剛剛","adv."],["still","仍然","adv."],["yet","還沒","adv."],["again","再次","adv."],
+["once","一次","adv."],["twice","兩次","adv."],["beside","在旁邊","prep."],["behind","在後面","prep."],["in front of","在前面","prep."],
+["next to","在隔壁","prep."],["across","橫越","prep."],["along","沿著","prep."],["around","環繞","prep."],["toward","朝向","prep."],
+["into","進入","prep."],["onto","到上面","prep."],["off","離開","prep."],["over","越過","prep."],["under","在下面","prep."],
+["beneath","在下方","prep."],["among","在...之中","prep."],["against","反對","prep."],["during","在...期間","prep."],["since","自從","prep."],
+["until","直到","prep."],["within","在...範圍內","prep."],["throughout","遍及","prep."],["despite","儘管","prep."],["unless","除非","conj."],
+["although","雖然","conj."],["though","雖然","conj."],["while","當...時候","conj."],["whereas","然而","conj."],["if","如果","conj."],
+["whenever","無論何時","conj."],["wherever","無論哪裡","conj."],["whoever","無論是誰","conj."],["whatever","無論什麼","conj."],["however","然而","adv."],
+["therefore","因此","adv."],["thus","因此","adv."],["moreover","此外","adv."],["furthermore","此外","adv."],["besides","此外","adv."],
+["instead of","代替","prep."],["according to","根據","prep."],["due to","由於","prep."],["because of","因為","prep."],["in spite of","儘管","prep."],
+["as well as","以及","conj."],["so that","以便","conj."],["language","語言","n."],["sentence","句子","n."],["word","單字","n."],
+["letter","信件","n."],["paragraph","段落","n."],["text","文本","n."],["email","電子郵件","n."],["password","密碼","n."],
+["website","網站","n."],["internet","網路","n."],["link","連結","n."],["page","頁面","n."],["file","檔案","n."],
+["folder","資料夾","n."],["document","文件","n."],["screen","螢幕","n."],["keyboard","鍵盤","n."],["mouse","滑鼠","n."],
+["printer","印表機","n."],["software","軟體","n."],["hardware","硬體","n."],["device","裝置","n."],["application","應用程式","n."],
+["program","程式","n."],["data","資料","n."],["information","資訊","n."],["wireless","無線的","adj."],["online","線上的","adj."],
+["offline","離線的","adj."],["virtual","虛擬的","adj."],["social media","社群媒體","n."],["video","影片","n."],["audio","音訊","n."],
+["microphone","麥克風","n."],["speaker","喇叭","n."],["headphones","耳機","n."],["channel","頻道","n."],["broadcast","廣播","n."],
+["interview","採訪","n."],["advertisement","廣告","n."],["newspaper","報紙","n."],["magazine","雜誌","n."],["article","文章","n."],
+["headline","標題","n."],["topic","主題","n."],["content","內容","n."],["sport","運動","n."],["game","遊戲","n."],
+["team","隊伍","n."],["player","選手","n."],["referee","裁判","n."],["champion","冠軍","n."],["medal","獎牌","n."],
+["trophy","獎杯","n."],["basketball","籃球","n."],["baseball","棒球","n."],["football","足球","n."],["volleyball","排球","n."],
+["tennis","網球","n."],["badminton","羽毛球","n."],["swimming","游泳","n."],["skating","滑冰","n."],["cycling","騎自行車","n."],
+["bicycle","自行車","n."],["bike","自行車","n."],["skateboard","滑板","n."],["hobby","興趣","n."],["leisure","休閒","n."],
+["entertainment","娛樂","n."],["concert","演唱會","n."],["festival","節日","n."],["parade","遊行","n."],["circus","馬戲團","n."],
+["carnival","嘉年華","n."],["picnic","野餐","n."],["camping","露營","n."],["fishing","釣魚","n."],["hiking","健行","n."],
+["puzzle","拼圖","n."],["chess","棋","n."],["toy","玩具","n."],["doll","娃娃","n."],["balloon","氣球","n."],
+["kite","風箏","n."],["transport","交通","n."],["traffic jam","交通堵塞","n."],["highway","公路","n."],["motorway","高速公路","n."],
+["intersection","十字路口","n."],["sign","標誌","n."],["speed","速度","n."],["fuel","燃料","n."],["gas","汽油","n."],
+["wheel","輪子","n."],["tire","輪胎","n."],["brake","煞車","n."],["motorbike","摩托車","n."],["scooter","機車","n."],
+["truck","卡車","n."],["taxi","計程車","n."],["subway","地鐵","n."],["bus","公車","n."],["boat","船","n."],
+["ship","船","n."],["ferry","渡輪","n."],["airplane","飛機","n."],["helicopter","直升機","n."],["passenger","乘客","n."],
+["seatbelt","安全帶","n."],["ticket office","售票處","n."],["timetable","時間表","n."],["departure","出發","n."],["arrival","到達","n."],
+["pair","一對","n."],["dozen","一打","n."],["piece","一片","n."],["set","一套","n."],["amount","數量","n."],
+["number","數字","n."],["total","總數","n."],["average","平均","n."],["percent","百分之","n."],["half","一半","n."],
+["part","部分","n."],["section","部分","n."],["chapter","章節","n."],["line","線","n."],["shape","形狀","n."],
+["circle","圓形","n."],["triangle","三角形","n."],["rectangle","長方形","n."],["pattern","圖案","n."],["color","顏色","n."],
+["brightness","亮度","n."],["height","高度","n."],["length","長度","n."],["width","寬度","n."],["depth","深度","n."],
+["distance","距離","n."],["direction","方向","n."],["position","位置","n."],["location","位置","n."],["space","空間","n."],
+["place","地方","n."],["spot","地點","n."],["surface","表面","n."],["edge","邊緣","n."],["side","邊","n."],
+["front","前面","n."],["top","頂部","n."],["bottom","底部","n."],["level","層級","n."],["stage","階段","n."],
+["step","步驟","n."],["process","過程","n."],["method","方法","n."],["way","方式","n."],["solution","解決方案","n."],
+["result","結果","n."],["effect","效果","n."],["cause","原因","n."],["reason","理由","n."],["purpose","目的","n."],
+["aim","目標","n."],["benefit","好處","n."],["advantage","優點","n."],["disadvantage","缺點","n."],["risk","風險","n."],
+["chance","機會","n."],["opportunity","機會","n."],["choice","選擇","n."],["option","選項","n."],["decision","決定","n."],
+["situation","情況","n."],["condition","狀況","n."],["circumstance","情況","n."],["case","案例","n."],["event","事件","n."],
+["incident","事件","n."],["accident","事故","n."],["emergency","緊急狀況","n."],["problem","問題","n."],["difficulty","困難","n."],
+["issue","議題","n."],["matter","事情","n."],["fact","事實","n."],["evidence","證據","n."],["proof","證明","n."],
+["truth","真相","n."],["lie","謊言","n."],["rumor","謠言","n."],["agreement","協議","n."],["contract","合約","n."],
+["rule","規則","n."],["law","法律","n."],["regulation","規定","n."],["policy","政策","n."],["system","系統","n."],
+["structure","結構","n."],["organization","組織","n."],["committee","委員會","n."],["group","團體","n."],["community","社群","n."],
+["society","社會","n."],["culture","文化","n."],["custom","習俗","n."],["tradition","傳統","n."],["ceremony","典禮","n."],
+["religion","宗教","n."],["belief","信念","n."],["value","價值","n."],["attitude","態度","n."],["behavior","行為","n."],
+["habit","習慣","n."],["manner","方式","n."],["style","風格","n."],["trend","趨勢","n."],["model","模型","n."],
+["version","版本","n."],["category","類別","n."],["item","項目","n."],["object","物體","n."],["material","材料","n."],
+["substance","物質","n."],["liquid","液體","n."],["solid","固體","n."],["metal","金屬","n."],["wood","木頭","n."],
+["glass","玻璃","n."],["plastic","塑膠","n."],["cotton","棉","n."],["leather","皮革","n."],["silk","絲","n."],
+["wool","羊毛","n."],["fabric","布料","n."],["rubber","橡膠","n."],["steel","鋼","n."],["stone","石頭","n."],
+["brick","磚","n."],["cement","水泥","n."],["oil","石油","n."],["gold","金子","n."],["silver","銀","n."],
+["copper","銅","n."],["iron","鐵","n."],
+];
+
+function dedupe(a){const s=new Set(),r=[];for(const w of a){const k=w[0];if(!s.has(k)){s.add(k);r.push(w);}}return r;}
+const WW=dedupe(WORDS);
+const PER_DAY=15;
+
+function wordsForDay(d){return WW.slice((d-1)*PER_DAY,d*PER_DAY);}
+function wordsForRange(d1,d2){return WW.slice((d1-1)*PER_DAY,d2*PER_DAY);}
+
+function buildSchedule(){
+  const items=[];let reviewN=0;
+  for(let m=0;m<3;m++){
+    const start=m*30+1;
+    for(let d=start;d<=start+29;d++){
+      items.push({type:'day',day:d,month:m+1});
+      if((d-start+1)%5===0&&d<start+29){
+        reviewN++;
+        items.push({type:'review',n:reviewN,dayRange:[d-4,d],month:m+1});
+      }
+    }
+    items.push({type:'exam',month:m+1,dayRange:[start,start+29]});
+  }
+  return items;
+}
+const SCHEDULE=buildSchedule();
+
+// ── Fallback sentence generator for words without a hand-written entry ──
+// Picks a grammatically-appropriate template based on part of speech.
+// Deterministic per word (hash-based) so the same word always gets the
+// same sentence within a session, but varies across the word list.
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=(h*31+s.charCodeAt(i))|0;}return Math.abs(h);}
+
+const TEMPLATES_N=[
+  "Can you see the ___ over there?",
+  "She put the ___ on the table carefully.",
+  "We talked about the ___ during lunch.",
+  "He pointed at the ___ and smiled.",
+  "I read about the ___ in a magazine.",
+  "The teacher explained what a ___ is.",
+  "They looked for the ___ everywhere.",
+  "This ___ belongs to my older sister.",
+  "Have you ever seen a ___ like this?",
+  "The children were curious about the ___.",
+];
+const TEMPLATES_V=[
+  "Every morning, she likes to ___ before breakfast.",
+  "Could you please ___ this for me?",
+  "He decided to ___ as soon as possible.",
+  "We need to ___ before the guests arrive.",
+  "I forgot to ___ yesterday, so I'll do it now.",
+  "They will ___ together after school.",
+  "Please don't ___ until I say it's okay.",
+  "She tried to ___ but it wasn't easy.",
+  "It's important to ___ every single day.",
+  "Let's ___ before it gets too late.",
+];
+const TEMPLATES_ADJ=[
+  "The weather today is really ___.",
+  "Everyone said the movie was ___.",
+  "His new bicycle looks very ___.",
+  "This question is too ___ for me.",
+  "The soup smells ___ tonight.",
+  "She felt ___ after the long trip.",
+  "That was the most ___ day of my life.",
+  "The room seemed ___ when we walked in.",
+  "Their new house is quite ___.",
+  "It was a ___ surprise for everyone.",
+];
+const TEMPLATES_ADV=[
+  "She ___ checks her email before bed.",
+  "He spoke ___ during the meeting.",
+  "We ___ go to that restaurant on weekends.",
+  "The train arrived ___ this morning.",
+  "___, they decided to stay home instead.",
+  "I ___ remember what happened that day.",
+  "The students worked ___ on the project.",
+  "He ___ finished his homework before dinner.",
+  "She smiled and answered ___.",
+  "They walked ___ toward the station.",
+];
+const TEMPLATES_PREP=[
+  "The cat is sitting ___ the box.",
+  "Please put your bag ___ the chair.",
+  "We walked ___ the old bridge.",
+  "She stood ___ her best friend.",
+  "The shop is ___ the corner.",
+  "He hid the gift ___ the bed.",
+  "They drove ___ the mountains all day.",
+  "The keys are ___ the drawer.",
+  "Our classroom is ___ the library.",
+  "The cat jumped ___ the table.",
+];
+const TEMPLATES_CONJ=[
+  "___ it was raining, they still went outside.",
+  "She studied hard, ___ she passed the exam.",
+  "He stayed home ___ he felt sick.",
+  "I'll call you ___ I arrive.",
+  "___ you finish your homework, you can play games.",
+  "She likes tea, ___ she prefers coffee in winter.",
+  "We can go now ___ wait a little longer.",
+  "He smiled ___ said nothing.",
+  "___ the weather was cold, the kids played outside.",
+  "They left early ___ avoid the traffic.",
+];
+
+function genSentence(word,pos){
+  const w=word.toLowerCase();
+  let pool;
+  if(pos.startsWith('n')) pool=TEMPLATES_N;
+  else if(pos.startsWith('v')) pool=TEMPLATES_V;
+  else if(pos.startsWith('adj')) pool=TEMPLATES_ADJ;
+  else if(pos.startsWith('adv')) pool=TEMPLATES_ADV;
+  else if(pos.startsWith('prep')) pool=TEMPLATES_PREP;
+  else if(pos.startsWith('conj')) pool=TEMPLATES_CONJ;
+  else if(pos.startsWith('pron')) pool=TEMPLATES_N;
+  else pool=TEMPLATES_N;
+  const idx=hashStr(w)%pool.length;
+  return pool[idx];
+}
+
+const SENT_MAP={
+  // Day 1
+  "apple":"She put an ___ and a banana in her lunchbox.",
+  "book":"He borrowed a ___ from the library yesterday.",
+  "cat":"Our ___ likes to sleep on the warm carpet.",
+  "dog":"The little ___ wagged its tail when I came home.",
+  "egg":"Mom fried an ___ for my breakfast this morning.",
+  // Day 2
+  "fish":"We saw a colorful ___ swimming in the tank.",
+  "go":"It is getting late, so we should ___ home now.",
+  "hat":"She put on a ___ to protect herself from the sun.",
+  "ice":"He added some ___ cubes to his glass of juice.",
+  "jump":"The athlete can ___ over a very high bar.",
+  // Day 3
+  "key":"She turned the ___ and the door opened.",
+  "lamp":"He switched on the ___ to read before bed.",
+  "map":"We used a ___ to find our way around the new city.",
+  "night":"Owls are birds that hunt during the ___.",
+  "open":"Could you please ___ the window? It's hot in here.",
+  // Day 4
+  "play":"The children went outside to ___ in the park.",
+  "queen":"The ___ waved to the crowd from the palace window.",
+  "run":"She likes to ___ along the river path every morning.",
+  "sun":"The ___ was so bright that he needed sunglasses.",
+  "tree":"They sat under a ___ to rest in the shade.",
+  // Day 5
+  "umbrella":"She opened her ___ as soon as the rain started.",
+  "voice":"The teacher asked everyone to lower their ___.",
+  "walk":"Let's ___ to the café instead of taking the bus.",
+  "box":"He packed all his books into a big cardboard ___.",
+  "yellow":"She picked the ___ flowers from the garden.",
+  // Day 6
+  "zoo":"The class went on a trip to the ___ last Friday.",
+  "arm":"He waved his ___ to get the waiter's attention.",
+  "bed":"She made her ___ neatly before leaving for school.",
+  "cup":"He filled his ___ with hot coffee and sat down.",
+  "door":"Please close the ___ quietly so you don't wake the baby.",
+  // Day 7
+  "ear":"She whispered the answer into his ___ so no one else heard.",
+  "face":"He splashed cold water on his ___ to wake himself up.",
+  "give":"I will ___ you my old bicycle since I have a new one.",
+  "hand":"She held out her ___ to help him cross the street.",
+  "ink":"The ___ in the printer ran out, so the page was blank.",
+  // Day 8
+  "jar":"Grandma kept homemade jam in a glass ___ on the shelf.",
+  "kick":"He gave the ball a hard ___ and it flew into the goal.",
+  "leg":"She hurt her ___ when she fell off the bike.",
+  "milk":"The baby drinks warm ___ before going to sleep.",
+  "nose":"The smell of fresh bread tickled his ___.",
+  // Day 9
+  "old":"The ___ clock on the wall has been there for fifty years.",
+  "pig":"The children laughed at the muddy ___ rolling in the field.",
+  "quick":"She gave a ___ wave and ran to catch the bus.",
+  "rain":"We decided to stay indoors because of the heavy ___.",
+  "sit":"Please ___ down and make yourself comfortable.",
+  // Day 10
+  "table":"We pulled up chairs and gathered around the dining ___.",
+  "use":"May I ___ your charger? My phone battery is almost dead.",
+  "van":"The delivery man arrived in a white ___.",
+  "water":"She remembered to ___ the plants before going on holiday.",
+  "exit":"In an emergency, please walk calmly to the nearest ___.",
+  // Day 11
+  "yard":"The dog spent the afternoon running around in the ___.",
+  "happy":"She was so ___ when she heard she had passed the exam.",
+  "angry":"He felt ___ when someone took his lunch from the fridge.",
+  "busy":"The restaurant is always ___ on Saturday evenings.",
+  "cold":"She wrapped her scarf tighter because it was so ___.",
+  // Day 12
+  "dark":"The room was completely ___ when the lights went out.",
+  "easy":"The first exercise is ___ but the later ones get harder.",
+  "fast":"The cheetah is the ___ land animal in the world.",
+  "good":"She is very ___ at drawing portraits of people.",
+  "hard":"Learning to play the piano can be ___ at the beginning.",
+  // Day 13
+  "ill":"He stayed home from school because he felt ___.",
+  "kind":"It was very ___ of her to help carry the heavy bags.",
+  "long":"The queue for the movie was so ___ that it reached the corner.",
+  "nice":"What a ___ surprise — flowers on the kitchen table!",
+  "pink":"She chose a ___ ribbon to tie around the gift.",
+  // Day 14
+  "red":"He painted the front door ___ to make it stand out.",
+  "soft":"The blanket is very ___ and warm on cold nights.",
+  "tall":"He is so ___ that he always hits his head on the doorframe.",
+  "ugly":"The broken wall looked ___ next to the tidy garden.",
+  "warm":"She poured herself a cup of ___ tea and relaxed.",
+  // Day 15
+  "young":"She started learning the violin when she was very ___.",
+  "answer":"He raised his hand and gave the correct ___.",
+  "bring":"Remember to ___ your student card to get the discount.",
+  "call":"She stepped outside to ___ her sister on the phone.",
+  "dance":"Everyone got up to ___ when the music started.",
+  // Day 16
+  "eat":"We usually ___ breakfast together as a family.",
+  "find":"Did you manage to ___ a seat on the crowded train?",
+  "help":"He stopped to ___ the old man carry his shopping bags.",
+  "invite":"She decided to ___ ten classmates to her birthday party.",
+  "join":"Would you like to ___ us for lunch in the cafeteria?",
+  // Day 17
+  "keep":"Please ___ the noise down so the baby can sleep.",
+  "learn":"She goes to evening classes to ___ Spanish.",
+  "make":"He offered to ___ dinner while she finished her work.",
+  "need":"You don't ___ an umbrella — the sun is shining today.",
+  "offer":"She will ___ to babysit whenever her sister needs help.",
+  // Day 18
+  "put":"Could you ___ those dishes in the sink, please?",
+  "reach":"She stood on her toes to ___ the top shelf.",
+  "send":"He will ___ the report to his boss by email tonight.",
+  "take":"Don't forget to ___ your medicine after dinner.",
+  "understand":"I couldn't ___ a word he said because he spoke so fast.",
+  // Day 19
+  "visit":"We are planning to ___ my grandparents next weekend.",
+  "wait":"Please ___ at the corner and I will pick you up in ten minutes.",
+  "know":"Do you ___ what time the last bus leaves tonight?",
+  "zero":"The temperature dropped to ___ degrees last night.",
+  "above":"Please write your name in the space ___ the line.",
+  // Day 20
+  "below":"The temperature stayed well ___ zero all week.",
+  "between":"The café is located ___ the bookshop and the post office.",
+  "after":"She always stretches ___ she finishes running.",
+  "before":"Please switch off the lights ___ you leave the room.",
+  "baby":"The ___ clapped her hands and laughed at the puppets.",
+  // Day 21
+  "city":"He moved to the ___ to find better job opportunities.",
+  "dream":"He had a strange ___ about flying over the mountains.",
+  "earth":"Scientists say the ___ is about 4.5 billion years old.",
+  "family":"Her ___ always eats dinner together on Sundays.",
+  "garden":"She planted roses along the fence in the front ___.",
+  // Day 22
+  "house":"They repainted the outside of their ___ bright white.",
+  "island":"They took a short boat ride to reach the small ___.",
+  "jungle":"The explorers hacked through thick plants in the ___.",
+  "kitchen":"The smell of garlic and onion filled the whole ___.",
+  "library":"She sat at a quiet table in the ___ to study for her exam.",
+  // Day 23
+  "mountain":"They could see snow on the top of the ___ all year round.",
+  "nation":"Every ___ sent athletes to compete in the games.",
+  "ocean":"The ___ stretches for thousands of kilometres in every direction.",
+  "palace":"Tourists lined up to take photos outside the royal ___.",
+  "river":"They rented a boat and floated down the ___ all afternoon.",
+  // Day 24
+  "school":"She arrived at ___ early to finish her homework.",
+  "ticket":"He bought a ___ for the train journey online.",
+  "uniform":"All pupils are required to wear a ___ in this school.",
+  "village":"The whole ___ came together to celebrate the harvest.",
+  "window":"She sat by the ___ and watched the rain fall outside.",
+  // Day 25
+  "airport":"They arrived at the ___ three hours before the flight.",
+  "bridge":"A cyclist rode across the old stone ___ over the river.",
+  "church":"Bells rang from the ___ every Sunday morning.",
+  "desert":"Very few plants can survive the heat of the ___.",
+  "engine":"The mechanic said the car's ___ needed to be replaced.",
+  // Day 26
+  "forest":"The path through the ___ was dark and full of roots.",
+  "ground":"After the storm, leaves covered the ___ completely.",
+  "harbor":"Colourful fishing boats bobbed gently in the ___.",
+  "journal":"She wrote her thoughts in her ___ every evening.",
+  "ladder":"He climbed the ___ to fix the light on the ceiling.",
+  // Day 27
+  "mirror":"She checked her appearance quickly in the hallway ___.",
+  "notice":"Did you ___ the new artwork on the classroom wall?",
+  "office":"He works in an ___ on the twenty-third floor.",
+  "pencil":"She sketched the landscape with a sharp ___.",
+  "rabbit":"A white ___ hopped across the garden and disappeared.",
+  // Day 28
+  "shadow":"Their long ___ stretched across the grass in the afternoon sun.",
+  "temple":"People left flowers and fruit outside the old ___.",
+  "tunnel":"The train slowed down as it entered the dark ___.",
+  "valley":"The village sat in a quiet green ___ between two hills.",
+  "wallet":"He realised his ___ was missing when he reached the counter.",
+  // Day 29
+  "basket":"She filled a ___ with fruit and brought it as a gift.",
+  "button":"The top ___ of his shirt was undone during the speech.",
+  "candle":"She lit a ___ on the table to make dinner feel special.",
+  "corner":"A small flower stall stood on the ___ near the school.",
+  "drawer":"She found the old photos in the bottom ___ of the desk.",
+  // Day 30
+  "finger":"She pointed her ___ at the map to show the route.",
+  "future":"Nobody knows what the ___ will bring.",
+  "gloves":"He put on his ___ before heading out into the snow.",
+  "insect":"A tiny ___ landed on the edge of her cup.",
+  "kitten":"The fluffy ___ curled up into a ball and fell asleep.",
+  // Day 31
+  "lemon":"She squeezed half a ___ over the fish before serving it.",
+  "mother":"His ___ taught him how to cook simple meals.",
+  "needle":"She threaded the ___ carefully before sewing on the button.",
+  "orange":"He peeled an ___ and divided it into segments for everyone.",
+  "pepper":"She added a pinch of ___ and tasted the soup again.",
+  // Day 32
+  "rocket":"The ___ launched into a clear blue sky with a roar.",
+  "teapot":"She poured boiling water into the ___ and left it to brew.",
+  "winter":"During ___, the roads near the mountains can be icy.",
+  "blanket":"He wrapped himself in a thick ___ and read by the fire.",
+  "captain":"The ___ welcomed all passengers on board over the speaker.",
+  // Day 33
+  "diamond":"A tiny ___ was set into the middle of the ring.",
+  "example":"The teacher gave a simple ___ to explain the grammar rule.",
+  "fashion":"She follows the latest ___ trends on social media.",
+  "genuine":"He showed ___ concern when he heard she was unwell.",
+  "hundred":"Over a ___ people attended the outdoor concert.",
+  // Day 34
+  "improve":"She practised speaking English daily to ___ her fluency.",
+  "journey":"The ___ from the coast to the capital took four hours by bus.",
+  "license":"You must pass a test to get a driving ___.",
+  "machine":"The ___ prints fifty pages per minute.",
+  "natural":"The park was left in its ___ state with no paths or fences.",
+  // Day 35
+  "opinion":"In her ___, the second design looks much cleaner.",
+  "perfect":"The weather was ___ for a long walk by the sea.",
+  "quarter":"She cut the pie into four equal ___ and served everyone.",
+  "receive":"Did you ___ the parcel that was posted last Monday?",
+  "service":"The staff gave friendly and efficient ___ all evening.",
+  // Day 36
+  "thought":"She sat quietly, lost in ___ after reading the letter.",
+  "weather":"The ___ forecast says there will be heavy rain tomorrow.",
+  "achieve":"With enough practice, you can ___ almost anything.",
+  "ancient":"The museum displayed ___ pottery found near the river.",
+  "balance":"She held out her arms to keep her ___ on the narrow beam.",
+  // Day 37
+  "careful":"Be ___ when you carry that — the tray is very hot.",
+  "discuss":"Let's ___ the details after everyone has read the report.",
+  "express":"She used hand gestures to ___ what she meant.",
+  "freedom":"They celebrated their ___ with music and fireworks.",
+  "general":"In ___, the students find the morning lessons easier.",
+  // Day 38
+  "imagine":"Close your eyes and ___ you are lying on a sunny beach.",
+  "jealous":"He felt a little ___ when his friend got the part he wanted.",
+  "mistake":"She caught a spelling ___ and corrected it before printing.",
+  "outside":"The children ran ___ the moment school ended.",
+  "popular":"That new café has become very ___ with local students.",
+  // Day 39
+  "realize":"He didn't ___ he had forgotten his bag until he reached school.",
+  "silence":"The audience sat in complete ___ as the music ended.",
+  "someone":"___ has left their coat on the chair by the door.",
+  "already":"She had ___ finished the book by the time I started it.",
+  "because":"He wore a raincoat ___ the sky looked dark and cloudy.",
+  // Day 40
+  "certain":"Are you ___ you locked the door before leaving?",
+  "deliver":"The courier will ___ the package between nine and noon.",
+  "educate":"Good schools ___ students to think for themselves.",
+  "forever":"She promised she would ___ remember that day.",
+  "include":"The tour price will ___ all meals and entrance fees.",
+  // Day 41
+  "morning":"She makes a cup of tea first thing every ___.",
+  "perhaps":"___ we should call ahead to check the opening hours.",
+  "quickly":"He finished his lunch ___ and rushed back to his desk.",
+  "respect":"We should ___ other people's opinions even if we disagree.",
+  "stadium":"The whole ___ erupted in cheers when the goal was scored.",
+  // Day 42
+  "trouble":"The broken printer caused a lot of ___ on a busy workday.",
+  "victory":"The captain lifted the trophy to celebrate their ___.",
+  "without":"She left the house ___ her phone and had to go back.",
+  "address":"Could you write your email ___ on this form, please?",
+  "collect":"He goes to the market every Saturday to ___ fresh herbs.",
+  // Day 43
+  "develop":"She took extra classes to ___ her public speaking skills.",
+  "explain":"The doctor took her time to ___ the treatment clearly.",
+  "feeling":"He had a strong ___ that they were going the wrong way.",
+  "grammar":"Her ___ is excellent, so her writing is always clear.",
+  "history":"She finds ___ fascinating and reads about it in her free time.",
+  // Day 44
+  "another":"One cookie wasn't enough, so she reached for ___.",
+  "century":"The cathedral was built in the twelfth ___.",
+  "curious":"She was ___ about what was inside the locked room.",
+  "digital":"He keeps all his notes in ___ form on his tablet.",
+  "elegant":"The venue looked ___ with soft lighting and white flowers.",
+  // Day 45
+  "finally":"After many attempts, she ___ managed to open the jar.",
+  "helpful":"The instructions in the manual were very ___ and clear.",
+  "laughter":"___ filled the room as soon as he told the first joke.",
+  "message":"She left a short ___ on the whiteboard for her team.",
+  "perform":"The band will ___ two songs at the end of the ceremony.",
+  // Day 46
+  "provide":"The company will ___ lunch for all staff on training days.",
+  "replace":"The dentist said she needed to ___ the old filling.",
+  "suggest":"He ___ that they try the new Thai restaurant downtown.",
+  "tonight":"Are you free ___ ? We are having a small gathering.",
+  "unusual":"It is ___ for it to be this warm in the middle of January.",
+  // Day 47
+  "violent":"The ___ wind knocked several trees down overnight.",
+  "welcome":"She was ___ at her new school and made friends quickly.",
+  "excited":"The children were ___ about visiting the water park.",
+  "further":"They drove ___ along the coast until they found a café.",
+  "growing":"She has a ___ collection of plants on her balcony.",
+  // Day 48
+  "healthy":"A ___ diet includes plenty of vegetables and water.",
+  "instead":"He chose to walk ___ of taking the crowded bus.",
+  "limited":"There are only a ___ number of seats left for the show.",
+  "mystery":"No one knew who sent the gift — it remained a ___.",
+  "network":"She built a strong ___ of contacts during her first year.",
+  // Day 49
+  "opening":"The ___ of the new gallery attracted hundreds of visitors.",
+  "project":"Our group presented the ___ to the rest of the class.",
+  "quality":"She checked the ___ of each item before packing the order.",
+  "routine":"His morning ___ includes stretching, breakfast, and a walk.",
+  "special":"She wore her ___ dress for the school concert.",
+  // Day 50
+  "teacher":"The ___ wrote the new vocabulary on the board.",
+  "visible":"The lighthouse was ___ from the ship even in thick fog.",
+  "written":"She handed in a ___ summary instead of a verbal one.",
+  "amazing":"The acrobats put on an ___ show at the festival.",
+  "believe":"I ___ she will do well if she keeps practising.",
+  // Day 51
+  "contain":"Each box will ___ exactly twelve bottles.",
+  "defense":"The team played strong ___ and didn't let a single goal in.",
+  "evening":"They sat on the porch and chatted all ___.",
+  "foreign":"She picked up a ___ accent after living abroad for years.",
+  "graphic":"The poster used bold ___ design to catch people's eyes.",
+  // Day 52
+  "intend":"I ___ to finish reading this chapter before dinner.",
+  "mineral":"This spring ___ water is sourced from deep underground.",
+  "notable":"The most ___ feature of the building is its curved roof.",
+  "observe":"Scientists ___ the behaviour of whales from the research boat.",
+  "publish":"The magazine will ___ her article in the next issue.",
+  // Day 53
+  "require":"The application will ___ two passport-sized photographs.",
+  "scatter":"The wind began to ___ the fallen leaves across the path.",
+  "thermal":"Hikers wear ___ layers to stay warm at high altitude.",
+  "upgrade":"He decided to ___ to a bigger screen for working from home.",
+  "various":"The buffet offered ___ dishes from around the world.",
+  // Day 54
+  "ability":"Her ___ to stay calm under pressure impressed everyone.",
+  "cabinet":"She kept important documents locked in the filing ___.",
+  "declare":"The judge was ready to ___ the final verdict.",
+  "element":"Oxygen is an ___ essential for human life.",
+  "feature":"The most useful ___ of this app is the offline mode.",
+  // Day 55
+  "gesture":"A small ___, like a handshake, can mean a great deal.",
+  "horizon":"They watched the last light of sunset fade below the ___.",
+  "inspire":"She hoped her story would ___ others to keep trying.",
+  "justice":"The lawyer fought hard to ensure ___ for his client.",
+  "lecture":"The professor gave a two-hour ___ on climate change.",
+  // Day 56–90 (continued)
+  "mention":"He forgot to ___ that the meeting had been moved.",
+  "nothing":"She searched every room but found ___ out of place.",
+  "remains":"The ancient ___ of the temple attract tourists every year.",
+  "serious":"He spoke in a ___ tone when he explained the new rules.",
+  "similar":"The two paintings look very ___ but one is a copy.",
+  "through":"She flipped ___ the pages until she found the right chapter.",
+  "universe":"The ___ contains billions of galaxies beyond our own.",
+};
+
+let S={tab:'plan',currentIdx:0,completed:{},quizState:null,studentName:''};
+
+// ══════════════════════════════════════════════════════════════
+//  STORAGE: Name-based login + localStorage + URL hash (3 layers)
+//  Student enters name once → stored in localStorage
+//  Every save writes to: localStorage[name] + URL hash
+//  On open: checks URL hash first, then localStorage by name
+//  Result: progress survives browser clears, device changes,
+//  as long as student uses same name OR their saved URL link
+// ══════════════════════════════════════════════════════════════
+
+function enc(obj){try{return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));}catch(e){return '';}}
+function dec(s){try{return JSON.parse(decodeURIComponent(escape(atob(s))));}catch(e){return null;}}
+function nameKey(n){return 'gept6_'+(n||'').trim().toLowerCase().replace(/\s+/g,'_');}
+
+function save(){
+  if(!S.studentName)return;
+  const data={completed:S.completed,name:S.studentName,ts:Date.now()};
+  try{localStorage.setItem(nameKey(S.studentName),JSON.stringify(data));}catch(e){}
+  try{sessionStorage.setItem(nameKey(S.studentName),JSON.stringify(data));}catch(e){}
+  try{history.replaceState(null,'',location.pathname+'#u='+encodeURIComponent(S.studentName)+'&d='+enc(S.completed));}catch(e){}
+}
+
+function loadFromHash(){
+  try{
+    const h=location.hash;
+    if(!h.startsWith('#u='))return false;
+    const parts=h.slice(1).split('&');
+    const uPart=parts.find(p=>p.startsWith('u='));
+    const dPart=parts.find(p=>p.startsWith('d='));
+    if(!uPart||!dPart)return false;
+    const name=decodeURIComponent(uPart.slice(2));
+    const data=dec(dPart.slice(2));
+    if(!data||!name)return false;
+    S.studentName=name;
+    S.completed=data||{};
+    // write back to localStorage
+    try{localStorage.setItem(nameKey(name),JSON.stringify({completed:S.completed,name,ts:Date.now()}));}catch(e){}
+    return true;
+  }catch(e){return false;}
+}
+
+function loadFromStorage(name){
+  try{
+    const k=nameKey(name);
+    const d=localStorage.getItem(k)||sessionStorage.getItem(k);
+    if(!d)return false;
+    const parsed=JSON.parse(d);
+    S.completed=parsed.completed||{};
+    S.studentName=name;
+    return true;
+  }catch(e){return false;}
+}
+
+function getSavedName(){
+  try{return localStorage.getItem('gept6_last_name')||'';}catch(e){return '';}
+}
+function saveLastName(n){try{localStorage.setItem('gept6_last_name',n);}catch(e){}}
+
+function firstVisitBanner(){return'';}
+
+function showNameLogin(onSuccess){
+  const existing=document.getElementById('login-modal');
+  if(existing)existing.remove();
+  const savedName=getSavedName();
+  const modal=document.createElement('div');
+  modal.id='login-modal';
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;z-index:9999;padding:1rem';
+  modal.innerHTML=`
+    <div style="background:#fff;border-radius:20px;padding:2rem;max-width:400px;width:100%;box-shadow:0 8px 40px rgba(0,0,0,.25);text-align:center">
+      <div style="font-size:36px;margin-bottom:12px">📚</div>
+      <div style="font-size:18px;font-weight:700;color:#1a1a18;margin-bottom:6px">全民英檢初級單字練習</div>
+      <div style="font-size:13px;color:#6b6b68;margin-bottom:20px;line-height:1.6">輸入你的名字，系統會自動記住你的學習進度<br>每次進來輸入同一個名字就能繼續</div>
+      <input id="name-input" type="text" placeholder="請輸入你的名字或暱稱"
+        value="${savedName}"
+        style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;margin-bottom:12px;text-align:center;outline:none;transition:border .2s"
+        onfocus="this.style.borderColor='#378ADD'"
+        onblur="this.style.borderColor='#ddd'"
+        onkeydown="if(event.key==='Enter')document.getElementById('name-confirm-btn').click()"
+      />
+      <button id="name-confirm-btn" onclick="
+        const n=document.getElementById('name-input').value.trim();
+        if(!n){document.getElementById('name-input').style.borderColor='#E24B4A';return;}
+        document.getElementById('login-modal').remove();
+        handleLogin(n);
+      " style="width:100%;padding:13px;background:#378ADD;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer">
+        開始學習 →
+      </button>
+      <div style="font-size:11px;color:#9b9b97;margin-top:12px">每次輸入相同名字即可繼續上次進度</div>
+    </div>`;
+  document.body.appendChild(modal);
+  setTimeout(()=>{
+    const inp=document.getElementById('name-input');
+    if(inp){inp.focus();if(savedName)inp.select();}
+  },100);
+}
+
+function handleLogin(name){
+  saveLastName(name);
+  const loaded=loadFromStorage(name);
+  if(loaded){
+    render();
+  } else {
+    S.studentName=name;
+    S.completed={};
+    save();
+    render();
+  }
+}
+
+// ── Initialise ────────────────────────────────────────────────
+(function init(){
+  // Try URL hash first (student opened their personal link)
+  if(loadFromHash()){
+    saveLastName(S.studentName);
+    render();
+    return;
+  }
+  // Try last-used name from this browser
+  const lastName=getSavedName();
+  if(lastName&&loadFromStorage(lastName)){
+    render();
+    return;
+  }
+  // No data found → show login
+  render(); // render shell first
+  showNameLogin();
+})();
+
+
+function render(){
+  if(!S.studentName){
+    // Just render the app wrapper shell; login modal will appear on top
+    document.getElementById('root').innerHTML='<div style="height:200px"></div>';
+    return;
+  }
+  const r=document.getElementById('root');
+  const tabs=['plan','learn','quiz','history'];
+  const labels=['學習計畫','今日內容','今日練習','學習紀錄'];
+  let html=`
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:8px 12px;background:#E6F1FB;border-radius:var(--border-radius-md)">
+    <div style="font-size:13px;color:#0C447C">👤 <strong>${S.studentName}</strong> 的學習進度</div>
+    <button onclick="showNameLogin()" style="font-size:11px;color:#6b6b68;background:none;border:0.5px solid #ccc;border-radius:6px;padding:3px 8px;cursor:pointer">切換使用者</button>
+  </div>
+  <div class="tab-bar">${tabs.map((t,i)=>`<button class="tab ${S.tab===t?'active':''}" onclick="setTab('${t}')">${labels[i]}</button>`).join('')}</div>
+  <div class="tab-content">`;
+  if(S.tab==='plan')html+=renderPlan();
+  else if(S.tab==='learn')html+=renderLearn();
+  else if(S.tab==='quiz')html+=renderQuiz();
+  else html+=renderHistory();
+  html+=`</div>`;
+  r.innerHTML=html;
+  if(S.tab==='quiz')attachQuizHandlers();
+}
+
+function setTab(t){S.tab=t;if(t==='quiz'&&!S.quizState)initQuiz();render();}
+function goLearn(idx){S.currentIdx=idx;S.tab='learn';S.quizState=null;render();}
+function goQuiz(idx){S.currentIdx=idx;S.tab='quiz';S.quizState=null;render();}
+
+function renderPlan(){
+  const done=Object.keys(S.completed).length;
+  const totalItems=SCHEDULE.length;
+  const pct=Math.round(done/totalItems*100);
+  let monthBlocks=['','',''];
+  SCHEDULE.forEach((item,idx)=>{
+    const m=item.month-1;
+    const isDone=!!S.completed[idx];
+    const isCur=idx===S.currentIdx;
+    if(item.type==='day'){
+      const cls='day-cell'+(isDone?' done':isCur?' active':'');
+      monthBlocks[m]+=`<div class="${cls}" onclick="goLearn(${idx})"><div>Day ${item.day}</div><div style="font-size:10px;color:inherit">${isDone?'完成':''}</div></div>`;
+    } else if(item.type==='review'){
+      const cls='day-cell review-cell'+(isDone?' done':'');
+      monthBlocks[m]+=`<div class="${cls}" onclick="goLearn(${idx})"><div>複習${item.n}</div><div style="font-size:10px;color:inherit">75字</div></div>`;
+    } else {
+      const cls='day-cell exam-cell'+(isDone?' done':'');
+      monthBlocks[m]+=`<div class="${cls}" onclick="goLearn(${idx})"><div>大考${item.month}</div><div style="font-size:10px;color:inherit">450字</div></div>`;
+    }
+  });
+  let html=firstVisitBanner()+`<div class="stat-grid">
+    <div class="stat-card"><div class="stat-n">${done}</div><div class="stat-l">已完成項目</div></div>
+    <div class="stat-card"><div class="stat-n">${done*15}</div><div class="stat-l">累積單字數</div></div>
+    <div class="stat-card"><div class="stat-n">${pct}%</div><div class="stat-l">整體進度</div></div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+  <div style="display:flex;gap:8px;font-size:11px;color:var(--color-text-secondary);margin-bottom:1rem;flex-wrap:wrap">
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#E6F1FB;border:0.5px solid #185FA5;border-radius:2px;display:inline-block"></span>一般學習日</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#FAEEDA;border:0.5px solid #BA7517;border-radius:2px;display:inline-block"></span>五日總複習</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#FCEBEB;border:0.5px solid #E24B4A;border-radius:2px;display:inline-block"></span>月底大滿貫</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:#EAF3DE;border:0.5px solid #639922;border-radius:2px;display:inline-block"></span>已完成</span>
+  </div>`;
+  ['第一個月（Day 1–30）','第二個月（Day 31–60）','第三個月（Day 61–90）'].forEach((label,m)=>{
+    html+=`<div class="month-label">${label}</div><div class="day-scroll">${monthBlocks[m]}</div>`;
+  });
+  return html;
+}
+
+function renderLearn(){
+  const item=SCHEDULE[S.currentIdx];
+  if(!item)return'<div>請先選擇學習項目</div>';
+  let words=[];
+  let title='',sub='',badgeCls='badge-day',typeLabel='學習日';
+  if(item.type==='day'){words=wordsForDay(item.day);title=`Day ${item.day} 今日單字`;sub=`第 ${item.month} 個月`;}
+  else if(item.type==='review'){words=wordsForRange(item.dayRange[0],item.dayRange[1]);title=`總複習 ${item.n}`;sub=`Day ${item.dayRange[0]}–${item.dayRange[1]}，共 ${words.length} 個單字`;badgeCls='badge-review';typeLabel='五日複習';}
+  else{words=wordsForRange(item.dayRange[0],item.dayRange[1]);title=`第 ${item.month} 個月大滿貫複習`;sub=`Day ${item.dayRange[0]}–${item.dayRange[1]}，共 ${words.length} 個單字`;badgeCls='badge-exam';typeLabel='月底大考';}
+  let html=`<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem">
+    <div>
+      <span class="badge ${badgeCls}" style="margin-bottom:6px;display:inline-block">${typeLabel}</span>
+      <div style="font-size:18px;font-weight:500">${title}</div>
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-top:2px">${sub}</div>
+    </div>
+    <button class="btn btn-blue btn-sm" onclick="setTab('quiz')">開始練習 →</button>
+  </div>
+  <div class="card" style="padding:0">`;
+  words.forEach((w,i)=>{html+=`<div class="word-row"><span class="wnum">${i+1}</span><span class="wen">${w[0]}</span><span class="wzh">${w[1]}</span><span class="wpos">${w[2]}</span></div>`;});
+  html+=`</div>`;
+  return html;
+}
+
+function initQuiz(){
+  const item=SCHEDULE[S.currentIdx];
+  if(!item){S.quizState={done:true,score:0,total:0};return;}
+  let words=item.type==='day'?wordsForDay(item.day):wordsForRange(item.dayRange[0],item.dayRange[1]);
+  const shuffled=[...words].sort(()=>Math.random()-0.5);
+  let pool=[];
+  if(item.type==='day'){
+    const useMatch=Math.random()<0.4;
+    if(useMatch){pool=[{t:'match_group',words:shuffled.slice(0,8)},...shuffled.slice(8).map(w=>({t:'fill',word:w}))];}
+    else{pool=shuffled.map(w=>({t:'fill',word:w}));}
+  } else if(item.type==='review'){
+    const mc=shuffled.slice(0,25).map(w=>({t:'mc',word:w,opts:makeMCOpts(w,words)}));
+    const fill=shuffled.slice(25,50).map(w=>({t:'fill',word:w}));
+    pool=[...mc,...fill].sort(()=>Math.random()-0.5);
+  } else {
+    pool=shuffled.slice(0,30).map(w=>({t:'mc',word:w,opts:makeMCOpts(w,words)}));
+  }
+  S.quizState={pool,cur:0,score:0,total:pool.length,done:false,matchState:null};
+  initMatchIfNeeded();
+}
+
+function makeMCOpts(w,allWords){
+  const others=allWords.filter(x=>x[0]!==w[0]).sort(()=>Math.random()-0.5).slice(0,3);
+  return [...others,w].sort(()=>Math.random()-0.5);
+}
+
+function initMatchIfNeeded(){
+  const qs=S.quizState;
+  if(!qs||qs.cur>=qs.pool.length)return;
+  const q=qs.pool[qs.cur];
+  if(q.t==='match_group'){
+    const ws=q.words;
+    qs.matchState={left:ws.map(w=>w[0]),right:[...ws.map(w=>w[1])].sort(()=>Math.random()-0.5),pairs:ws.map(w=>[w[0],w[1]]),matched:[],selL:null,selR:null};
+  }
+}
+
+function renderQuiz(){
+  if(!S.quizState)initQuiz();
+  const qs=S.quizState;
+  if(!qs||qs.done)return renderQuizResult();
+  if(qs.cur>=qs.pool.length){finishQuiz();return renderQuizResult();}
+  const q=qs.pool[qs.cur];
+  const pct=Math.round(qs.cur/qs.total*100);
+  let qhtml=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="font-size:16px;font-weight:500">練習題</div><span style="font-size:12px;color:var(--color-text-secondary)">${qs.cur+1} / ${qs.total}</span></div>
+  <div class="progress-bar" style="margin-bottom:1rem"><div class="progress-fill" style="width:${pct}%"></div></div>`;
+  if(q.t==='fill'){
+    const rawSent=SENT_MAP[q.word[0]]||genSentence(q.word[0],q.word[2]);
+    const sent=rawSent.replace('___',`<u style="color:#378ADD;font-weight:500">______</u>`);
+    qhtml+=`<div class="quiz-box"><span class="badge badge-day" style="margin-bottom:8px;display:inline-block">填空題</span>
+    <div style="font-size:14px;line-height:1.9;margin-bottom:10px">${sent}</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:8px">中文：${q.word[1]}（${q.word[2]}）</div>
+    <input class="fill-input" id="fi" type="text" placeholder="請拼出英文單字..." autocomplete="off" />
+    <div id="fr"></div></div>
+    <div style="display:flex;gap:8px"><button class="btn" onclick="checkFill()">確認</button><button class="btn btn-sm" onclick="skipQ()">跳過</button></div>`;
+  } else if(q.t==='mc'){
+    qhtml+=`<div class="quiz-box"><span class="badge badge-review" style="margin-bottom:8px;display:inline-block">選擇題</span>
+    <div style="font-size:14px;font-weight:500;margin-bottom:12px">"${q.word[0]}" 的中文意思是？</div><div id="mc-opts">`;
+    q.opts.forEach((opt,i)=>{qhtml+=`<button class="mc-opt" id="mc-${i}" onclick="checkMC(${i})">${opt[1]}</button>`;});
+    qhtml+=`</div><div id="mcr"></div></div>`;
+  } else if(q.t==='match_group'){
+    const ms=qs.matchState;
+    const done=ms.matched.length,total=ms.pairs.length;
+    qhtml+=`<div class="quiz-box"><span class="badge" style="background:#FBEAF0;color:#72243E;margin-bottom:8px;display:inline-block">連連看</span>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px">${done} / ${total} 配對完成</div>
+    <div class="match-grid"><div>${ms.left.map((w,i)=>{
+      const matched=ms.matched.find(p=>p[0]===w),sel=ms.selL===w;
+      return `<div class="${matched?'mi ok':sel?'mi sel':'mi'}" onclick="selMatch('l','${w}')">${w}</div>`;
+    }).join('')}</div><div>${ms.right.map((zh,i)=>{
+      const matched=ms.matched.find(p=>p[1]===zh),sel=ms.selR===zh;
+      return `<div class="${matched?'mi ok':sel?'mi sel':'mi'}" onclick="selMatch('r','${encodeURIComponent(zh)}')">${zh}</div>`;
+    }).join('')}</div></div>
+    ${done===total?`<button class="btn btn-blue" style="margin-top:10px" onclick="finishMatch()">完成配對 →</button>`:''}
+    </div>`;
+  }
+  return qhtml;
+}
+
+function attachQuizHandlers(){
+  const fi=document.getElementById('fi');
+  if(fi){fi.focus();fi.onkeydown=e=>{if(e.key==='Enter')checkFill();};}
+}
+
+function checkFill(){
+  const qs=S.quizState,q=qs.pool[qs.cur];
+  const fi=document.getElementById('fi'),fr=document.getElementById('fr');
+  if(!fi||!fr)return;
+  const ans=fi.value.trim().toLowerCase(),correct=q.word[0].toLowerCase();
+  fi.disabled=true;
+  if(ans===correct){fr.innerHTML=`<div class="res-ok">正確！</div>`;qs.score++;setTimeout(()=>{qs.cur++;initMatchIfNeeded();render();},800);}
+  else{fr.innerHTML=`<div class="res-bad">答案是：${correct}</div>`;setTimeout(()=>{qs.cur++;initMatchIfNeeded();render();},1400);}
+}
+
+function skipQ(){S.quizState.cur++;initMatchIfNeeded();render();}
+
+function checkMC(i){
+  const qs=S.quizState,q=qs.pool[qs.cur];
+  const correct=q.opts[i][0]===q.word[0];
+  q.opts.forEach((_,j)=>{const el=document.getElementById('mc-'+j);if(!el)return;el.disabled=true;if(q.opts[j][0]===q.word[0])el.className='mc-opt reveal';else if(j===i&&!correct)el.className='mc-opt bad';});
+  if(correct)qs.score++;
+  const mcr=document.getElementById('mcr');
+  if(mcr)mcr.innerHTML=correct?`<div class="res-ok">正確！</div>`:`<div class="res-bad">答案是：${q.word[1]}</div>`;
+  setTimeout(()=>{qs.cur++;initMatchIfNeeded();render();},1200);
+}
+
+function selMatch(side,val){
+  const qs=S.quizState,ms=qs.matchState,decoded=decodeURIComponent(val);
+  if(side==='l'){if(ms.matched.find(p=>p[0]===decoded))return;ms.selL=decoded;}
+  else{if(ms.matched.find(p=>p[1]===decoded))return;ms.selR=decoded;}
+  if(ms.selL&&ms.selR){
+    const ok=ms.pairs.find(p=>p[0]===ms.selL&&p[1]===ms.selR);
+    if(ok){ms.matched.push([ms.selL,ms.selR]);qs.score++;}
+    ms.selL=null;ms.selR=null;
+  }
+  render();
+}
+
+function finishMatch(){S.quizState.cur++;initMatchIfNeeded();render();}
+
+function finishQuiz(){
+  const qs=S.quizState;
+  if(qs.done)return;
+  qs.done=true;
+  const item=SCHEDULE[S.currentIdx];
+  if(!S.completed[S.currentIdx]){
+    S.completed[S.currentIdx]={score:qs.score,total:qs.total,date:new Date().toLocaleDateString('zh-TW'),type:item.type,
+      label:item.type==='day'?`Day ${item.day}`:item.type==='review'?`總複習${item.n}`:`第${item.month}月大考`};
+    save();
+  }
+}
+
+function autoSaveModal(){
+  // Progress is now saved automatically by name — just show a toast
+  save();
+  const existing=document.getElementById('save-toast');
+  if(existing)existing.remove();
+  const toast=document.createElement('div');
+  toast.id='save-toast';
+  toast.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#2da44e;color:#fff;padding:10px 20px;border-radius:999px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:opacity .4s';
+  toast.textContent='✓ 進度已自動儲存';
+  document.body.appendChild(toast);
+  setTimeout(()=>{toast.style.opacity='0';setTimeout(()=>toast.remove(),400);},2000);
+}
+
+function renderQuizResult(){
+  finishQuiz();
+  const qs=S.quizState,item=SCHEDULE[S.currentIdx];
+  const pct=qs.total>0?Math.round(qs.score/qs.total*100):0;
+  const emoji=pct>=80?'★':pct>=60?'◎':'○';
+  const msg=pct>=80?'表現優秀！':pct>=60?'不錯，繼續加油！':'再複習一次，你可以的！';
+  const nextIdx=S.currentIdx+1<SCHEDULE.length?S.currentIdx+1:null;
+  setTimeout(()=>autoSaveModal(),400);
+  return `<div class="card" style="text-align:center;padding:2rem 1.5rem">
+    <div style="font-size:36px;margin-bottom:8px">${emoji}</div>
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">${S.completed[S.currentIdx]?.label||''} 完成</div>
+    <div style="font-size:24px;font-weight:500;color:#378ADD;margin:8px 0">${qs.score} <span style="font-size:15px;color:var(--color-text-secondary)">/ ${qs.total}</span></div>
+    <div style="font-size:13px;color:#2da44e;margin-bottom:1rem;font-size:12px">✓ 進度已自動儲存，下次輸入「${S.studentName}」繼續</div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="btn" onclick="S.quizState=null;render()">再練一次</button>
+      ${nextIdx!==null?`<button class="btn btn-blue" onclick="S.currentIdx=${nextIdx};S.quizState=null;S.tab='learn';render()">下一項 →</button>`:'<span style="font-size:13px;color:#27500A;font-weight:500">全部完成！</span>'}
+    </div>
+  </div>`;
+}
+
+function renderHistory(){
+  const entries=Object.entries(S.completed).sort((a,b)=>Number(b[0])-Number(a[0]));
+  // Backup / restore bar — always visible
+  const backupBar=`<div style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary)">
+    <div style="flex:1">
+      <div style="font-size:12px;font-weight:500;color:var(--color-text-primary);margin-bottom:2px">📌 儲存個人進度書籤</div>
+      <div style="font-size:11px;color:var(--color-text-secondary)">點下方按鈕取得你的專屬連結，書籤後永久保留進度</div>
+    </div>
+    <button class="btn btn-sm btn-blue" onclick="showBookmark()">取得我的進度連結</button>
+  </div>`;
+  if(!entries.length)return backupBar+`<div style="color:var(--color-text-secondary);font-size:14px;padding:0.5rem 0">尚無學習紀錄，完成練習後會自動記錄在這裡。</div>`;
+  const totalScore=entries.reduce((s,[,v])=>s+v.score,0);
+  const totalQ=entries.reduce((s,[,v])=>s+v.total,0);
+  const avgPct=totalQ>0?Math.round(totalScore/totalQ*100):0;
+  let html=backupBar+`<div class="stat-grid" style="margin-bottom:1rem">
+    <div class="stat-card"><div class="stat-n">${entries.length}</div><div class="stat-l">完成次數</div></div>
+    <div class="stat-card"><div class="stat-n">${totalQ}</div><div class="stat-l">總答題數</div></div>
+    <div class="stat-card"><div class="stat-n">${avgPct}%</div><div class="stat-l">平均正確率</div></div>
+  </div><div class="card" style="padding:0">`;
+  entries.forEach(([idx,v])=>{
+    const pct=v.total>0?Math.round(v.score/v.total*100):0;
+    const barColor=pct>=80?'#639922':pct>=60?'#BA7517':'#E24B4A';
+    const typeBadge=v.type==='day'?'badge-day':v.type==='review'?'badge-review':'badge-exam';
+    html+=`<div class="hist-row">
+      <span class="badge ${typeBadge}" style="min-width:60px;text-align:center">${v.label}</span>
+      <div style="flex:1;padding:0 12px"><div style="height:4px;background:var(--color-background-secondary);border-radius:2px"><div style="height:100%;border-radius:2px;background:${barColor};width:${pct}%"></div></div></div>
+      <span style="font-size:12px;font-weight:500;color:var(--color-text-primary);min-width:36px;text-align:right">${pct}%</span>
+      <span style="font-size:11px;color:var(--color-text-secondary);min-width:40px;text-align:right">${v.score}/${v.total}</span>
+      <span style="font-size:11px;color:var(--color-text-secondary);min-width:64px;text-align:right">${v.date}</span>
+      <button class="btn btn-sm" onclick="goLearn(${idx})" style="margin-left:6px">複習</button>
+    </div>`;
+  });
+  html+=`</div>`;
+  return html;
+}
+
+render();
+</script>
+</body>
+</html>
